@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
-        /* --- DESIGN SYSTEM (v23) --- */
+        /* --- DESIGN SYSTEM (v24) --- */
         :root {
             --primary-dark: #0f172a;
             --primary-blue: #3b82f6;
@@ -49,10 +49,10 @@
             margin: 0 auto;
             padding: 0 20px;
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr; /* RETOUR AUX 3 COLONNES */
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 40px;
             font-size: 0.9em;
-            text-align: left; /* Alignement gauche restauré */
+            text-align: left;
         }
         .footer-col h4 { color: var(--primary-blue); margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
         .footer-col ul { list-style: none; padding: 0; }
@@ -324,10 +324,11 @@
     <!-- TOAST NOTIFICATION -->
     <div id="toast" class="toast">✅ Lien copié dans le presse-papier !</div>
 
-    <!-- CHATBASE EMBED -->
+    <!-- CHATBASE EMBED (INTEGRATION FINALE) -->
     <script>
         window.embeddedChatbotConfig = {
-            chatbotId: "VOTRE_ID_CHATBASE", // REMPLACEZ CECI PAR VOTRE ID CHATBASE
+            // ID OBTENU DE CHATBASE : gMr_AOgB1wlJ4_LBNeKcQ
+            chatbotId: "gMr_AOgB1wlJ4_LBNeKcQ", 
             domain: "www.chatbase.co"
         }
     </script>
