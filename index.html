@@ -3,27 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horizon Pierre | La Suite Immobilière</title>
+    <title>Horizon Pierre | L'Outil Immobilier Gratuit</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
-        /* --- DESIGN SYSTEM PREMIUM (v21) --- */
+        /* --- DESIGN SYSTEM (v23) --- */
         :root {
-            --primary-dark: #0f172a;       /* Bleu nuit */
-            --primary-blue: #3b82f6;       /* Bleu action */
-            --accent-gold: #f59e0b;        /* Or */
-            --bg-body: #f8fafc;            /* Gris très clair */
+            --primary-dark: #0f172a;
+            --primary-blue: #3b82f6;
+            --accent-gold: #f59e0b;
+            --bg-body: #f8fafc;
             --text-main: #334155;
             --text-muted: #64748b;
-            
             --success: #10b981;
             --danger: #ef4444;
-
             --chart-capital: #10b981;
             --chart-interest: #3b82f6;
             --chart-insurance: #6366f1;
-            
             --dpe-a: #009c3d; --dpe-b: #51b94d; --dpe-c: #ccce29;
             --dpe-d: #f3e500; --dpe-e: #fcc900; --dpe-f: #eb8c00; --dpe-g: #d7221f;
         }
@@ -34,136 +31,87 @@
             color: var(--text-main);
             margin: 0; padding: 0;
             line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            display: flex; flex-direction: column; min-height: 100vh;
         }
 
-        /* --- LAYOUT --- */
+        /* LAYOUT */
         .top-bar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #e2e8f0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 1000;
         }
-
-        .header-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .site-wrapper {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
-            flex: 1; 
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .site-footer {
-            background: var(--primary-dark);
-            color: white;
-            padding: 40px 0;
-            margin-top: 60px;
-        }
-
+        .header-inner { max-width: 1100px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .site-wrapper { max-width: 1100px; margin: 40px auto; padding: 0 20px; flex: 1; width: 100%; box-sizing: border-box; }
+        
+        /* FOOTER (Restauré Version 21) */
+        .site-footer { background: var(--primary-dark); color: white; padding: 40px 0; margin-top: 60px; }
         .footer-inner {
             max-width: 1100px;
             margin: 0 auto;
             padding: 0 20px;
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr; /* RETOUR AUX 3 COLONNES */
             gap: 40px;
             font-size: 0.9em;
+            text-align: left; /* Alignement gauche restauré */
         }
         .footer-col h4 { color: var(--primary-blue); margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
         .footer-col ul { list-style: none; padding: 0; }
         .footer-col li { margin-bottom: 10px; opacity: 0.8; cursor: pointer; transition: opacity 0.2s; }
         .footer-col li:hover { opacity: 1; color: var(--primary-blue); }
 
-        .brand { 
-            font-size: 1.5em; 
-            font-weight: 800; 
-            color: var(--primary-dark); 
-            letter-spacing: -1px; 
-            text-transform: uppercase; 
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .brand span { color: var(--primary-blue); }
-        .brand:hover { opacity: 0.8; }
 
+        .brand { font-size: 1.5em; font-weight: 800; color: var(--primary-dark); letter-spacing: -1px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .brand span { color: var(--primary-blue); }
         .main-nav { display: flex; gap: 5px; }
-        .nav-link { padding: 8px 16px; text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9em; border-radius: 8px; transition: all 0.2s ease; cursor: pointer; }
+        .nav-link { padding: 8px 16px; text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9em; border-radius: 8px; transition: all 0.2s; cursor: pointer; }
         .nav-link:hover { background: #f1f5f9; color: var(--primary-dark); }
         .nav-link.active { background-color: var(--primary-dark); color: white; }
 
-        /* --- UI COMPONENTS --- */
-        .glass-panel { background: white; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); padding: 30px; transition: transform 0.2s; }
-        .glass-panel:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        /* UI ELEMENTS */
+        .glass-panel { background: white; border-radius: 16px; border: 1px solid #e2e8f0; padding: 30px; transition: transform 0.2s; cursor: pointer; }
+        .glass-panel:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: var(--primary-blue); }
         
-        .btn-primary { background: var(--primary-blue); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
-        .btn-outline { background: transparent; border: 2px solid rgba(255,255,255,0.3); color: white; padding: 10px; border-radius: 10px; width: 100%; cursor: pointer; margin-top: 10px; font-weight: 600; }
-        .btn-outline:hover { background: rgba(255,255,255,0.1); }
+        .btn-primary { background: var(--primary-blue); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+        .btn-primary:hover { background: #2563eb; }
+        .btn-outline { background: transparent; border: 2px solid rgba(255,255,255,0.3); color: white; padding: 10px; border-radius: 10px; width: 100%; cursor: pointer; margin-top: 10px; font-weight: 600; transition: 0.2s; }
+        .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: white; }
         .btn-ghost { background: transparent; border: 1px solid #cbd5e1; color: var(--text-muted); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 0.9em; }
-        .btn-ghost:hover { border-color: var(--primary-dark); color: var(--primary-dark); }
+        .btn-secondary { background: #e0f2fe; color: var(--primary-blue); border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 10px; }
+        .btn-secondary:hover { background: #bae6fd; }
 
-        /* --- CALCULATOR --- */
+        /* CALCULATOR */
         .calc-wrapper { display: grid; grid-template-columns: 1fr 380px; gap: 30px; align-items: start; }
         .input-section { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .sticky-results { position: sticky; top: 100px; background: var(--primary-dark); color: white; border-radius: 16px; padding: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); text-align: center; }
 
         .form-group { margin-bottom: 20px; }
         .form-group label { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 600; font-size: 0.9em; color: var(--text-muted); }
-        .form-control { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em; font-family: 'Inter', sans-serif; box-sizing: border-box; transition: border-color 0.2s; }
+        .form-control { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em; box-sizing: border-box; }
         .form-control:focus { border-color: var(--primary-blue); outline: none; }
 
-        /* SLIDERS FIX */
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; margin-top: 10px; cursor: pointer; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: #cbd5e1; border-radius: 3px; }
-        input[type=range]::-webkit-slider-thumb { height: 20px; width: 20px; border-radius: 50%; background: var(--primary-blue); cursor: pointer; -webkit-appearance: none; margin-top: -7px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); border: 2px solid white; }
-        input[type=range]::-moz-range-track { width: 100%; height: 6px; cursor: pointer; background: #cbd5e1; border-radius: 3px; }
-        input[type=range]::-moz-range-thumb { height: 20px; width: 20px; border: 2px solid white; border-radius: 50%; background: var(--primary-blue); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; cursor: pointer; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; background: #cbd5e1; border-radius: 3px; }
+        input[type=range]::-webkit-slider-thumb { height: 20px; width: 20px; border-radius: 50%; background: var(--primary-blue); -webkit-appearance: none; margin-top: -7px; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
         .donut-chart { width: 180px; height: 180px; border-radius: 50%; margin: 0 auto 20px auto; position: relative; background: conic-gradient(var(--chart-capital) 0% 60%, var(--chart-interest) 60% 90%, var(--chart-insurance) 90% 100%); }
         .donut-hole { width: 140px; height: 140px; background: var(--primary-dark); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .main-metric { font-size: 1.8em; font-weight: 800; color: white; line-height: 1; }
 
-        /* SAVED & MODALS */
-        .saved-section { margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px; }
-        .saved-list { display: grid; gap: 10px; margin-top: 10px; }
-        .saved-card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; }
-        .saved-card:hover { background: #f1f5f9; border-color: var(--primary-blue); }
-        .saved-info { display: flex; flex-direction: column; }
-        .saved-name { font-weight: 700; color: var(--primary-dark); font-size: 0.9em; }
-        .saved-detail { font-size: 0.8em; color: var(--text-muted); }
-        .delete-btn { color: #cbd5e1; cursor: pointer; font-size: 1.2em; padding: 5px; }
-        .delete-btn:hover { color: var(--danger); }
-
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px); z-index: 1000; display: none; align-items: center; justify-content: center; }
-        .modal-card { background: white; width: 90%; max-width: 800px; max-height: 90vh; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+        /* MODALS & ALERTS */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px); z-index: 2000; display: none; align-items: center; justify-content: center; }
+        .modal-card { background: white; width: 95%; max-width: 800px; max-height: 90vh; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
         .modal-header { padding: 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
         .modal-body { padding: 20px; overflow-y: auto; }
         .table-responsive { width: 100%; border-collapse: collapse; font-size: 0.9em; }
-        .table-responsive th { text-align: left; padding: 12px; background: #f1f5f9; color: var(--text-muted); font-weight: 600; position: sticky; top: 0; }
+        .table-responsive th { text-align: left; padding: 12px; background: #f1f5f9; position: sticky; top: 0; }
         .table-responsive td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
-        .close-modal { cursor: pointer; font-size: 1.5em; color: var(--text-muted); background: none; border: none; }
+        
+        .toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary-dark); color: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transform: translateY(100px); transition: transform 0.3s; z-index: 3000; display: flex; align-items: center; gap: 10px; }
+        .toast.show { transform: translateY(0); }
 
         .dpe-badge { font-size: 4em; font-weight: 800; color: white; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; border-radius: 20px; margin: 0 auto 20px auto; }
-        .loader { border: 3px solid #f3f3f3; border-radius: 50%; border-top: 3px solid var(--primary-blue); width: 20px; height: 20px; -webkit-animation: spin 1s linear infinite; animation: spin 1s linear infinite; display: none; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
+        
+        /* Mobile */
         @media (max-width: 768px) {
             .calc-wrapper { grid-template-columns: 1fr; }
             .sticky-results { position: relative; top: 0; margin-top: 20px; }
@@ -175,7 +123,6 @@
 </head>
 <body>
 
-    <!-- TOP BAR -->
     <nav class="top-bar">
         <div class="header-inner">
             <div class="brand" onclick="navTo('home', null)">
@@ -196,29 +143,29 @@
         <section id="home-page">
             <div style="text-align: center; padding: 60px 20px;">
                 <h1 style="font-size: 3em; color: var(--primary-dark); margin-bottom: 10px; line-height: 1.1;">L'Intelligence Artificielle<br>de votre Patrimoine.</h1>
-                <p style="font-size: 1.2em; color: var(--text-muted); margin-bottom: 40px;">Simulez, optimisez et validez vos investissements avec la précision d'un banquier.</p>
-                <button class="btn-primary" style="width: fit-content; margin: 0 auto;" onclick="navTo('calculator', document.querySelectorAll('.nav-link')[1])">Démarrer une simulation →</button>
+                <p style="font-size: 1.2em; color: var(--text-muted); margin-bottom: 40px;">Outil 100% gratuit pour simuler vos projets immobiliers.</p>
+                <button class="btn-primary" style="width: fit-content; margin: 0 auto;" onclick="navTo('calculator', document.querySelectorAll('.nav-link')[1])">Commencer une simulation →</button>
             </div>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-                <div class="glass-panel" onclick="navTo('calculator', document.querySelectorAll('.nav-link')[1])" style="cursor: pointer;">
+                <div class="glass-panel" onclick="navTo('calculator', document.querySelectorAll('.nav-link')[1])">
                     <span style="font-size: 2em;">🏦</span>
                     <h3>Simulateur Bancaire</h3>
-                    <p style="color:var(--text-muted)">Calcul de mensualité, capacité d'emprunt et tableau d'amortissement détaillé.</p>
+                    <p style="color:var(--text-muted)">Calcul de mensualité, capacité d'emprunt et tableau d'amortissement.</p>
                 </div>
-                <div class="glass-panel" onclick="navTo('patrimoine', document.querySelectorAll('.nav-link')[2])" style="cursor: pointer;">
+                <div class="glass-panel" onclick="navTo('patrimoine', document.querySelectorAll('.nav-link')[2])">
                     <span style="font-size: 2em;">📈</span>
-                    <h3>Cashflow Locatif</h3>
-                    <p style="color:var(--text-muted)">Analysez la rentabilité réelle (Pinel, LMNP) et votre effort d'épargne.</p>
+                    <h3>Rentabilité & Fiscalité</h3>
+                    <p style="color:var(--text-muted)">Estimez votre Cashflow Net d'impôts (LMNP, Réel).</p>
                 </div>
-                <div class="glass-panel" onclick="navTo('dpe', document.querySelectorAll('.nav-link')[3])" style="cursor: pointer;">
+                <div class="glass-panel" onclick="navTo('dpe', document.querySelectorAll('.nav-link')[3])">
                     <span style="font-size: 2em;">🌡️</span>
                     <h3>Audit DPE</h3>
-                    <p style="color:var(--text-muted)">Estimez la classe énergétique en 3 clics et évitez les passoires thermiques.</p>
+                    <p style="color:var(--text-muted)">Estimez la classe énergétique en 3 clics.</p>
                 </div>
             </div>
         </section>
 
-        <!-- CALCULATEUR -->
+        <!-- CALCULATEUR CREDIT -->
         <section id="calculator-page" style="display: none;">
             <div class="calc-wrapper">
                 <div class="input-section">
@@ -231,122 +178,78 @@
                     </div>
 
                     <form onsubmit="return false;">
-                        <div class="form-group">
-                            <label>Revenus Nets Foyer <span id="rev_val">4 500 €</span></label>
-                            <input type="range" id="revenus" min="1500" max="15000" step="100" value="4500" oninput="updateVal('rev_val', this.value, ' €'); calculate()">
-                        </div>
-
-                        <div id="wrapper-prix">
-                            <div class="form-group">
-                                <label>Prix du Bien <span id="prix_val">250 000 €</span></label>
-                                <input type="number" id="prix_bien" class="form-control" value="250000" oninput="document.getElementById('prix_val').innerText = formatMoney(this.value) + ' €'; calculate()">
-                            </div>
-                        </div>
-                        
-                        <div id="wrapper-budget" style="display:none;">
-                            <div class="form-group">
-                                <label style="color:var(--primary-blue);">Budget Mensuel Max</label>
-                                <input type="number" id="budget_mensuel" class="form-control" value="1200" oninput="calculate()">
-                            </div>
-                        </div>
-
+                        <div class="form-group"><label>Revenus Nets Foyer <span id="rev_val">4 500 €</span></label><input type="range" id="revenus" min="1500" max="15000" step="100" value="4500" oninput="updateVal('rev_val', this.value, ' €'); calculate()"></div>
+                        <div id="wrapper-prix"><div class="form-group"><label>Prix du Bien <span id="prix_val">250 000 €</span></label><input type="number" id="prix_bien" class="form-control" value="250000" oninput="document.getElementById('prix_val').innerText = formatMoney(this.value) + ' €'; calculate()"></div></div>
+                        <div id="wrapper-budget" style="display:none;"><div class="form-group"><label style="color:var(--primary-blue);">Budget Mensuel Max</label><input type="number" id="budget_mensuel" class="form-control" value="1200" oninput="calculate()"></div></div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div class="form-group">
-                                <label>Apport</label>
-                                <input type="number" id="apport" class="form-control" value="40000" oninput="calculate()">
-                            </div>
-                            <div class="form-group">
-                                <label>Frais Agence (Inclus)</label>
-                                <input type="number" id="agence" class="form-control" value="10000" oninput="calculate()">
-                            </div>
+                            <div class="form-group"><label>Apport</label><input type="number" id="apport" class="form-control" value="40000" oninput="calculate()"></div>
+                            <div class="form-group"><label>Frais Agence</label><input type="number" id="agence" class="form-control" value="10000" oninput="calculate()"></div>
                         </div>
-
-                        <div class="form-group">
-                            <label>Durée : <span id="duree_val">20</span> ans</label>
-                            <input type="range" id="duree" min="7" max="30" value="20" oninput="updateVal('duree_val', this.value, ''); calculate()">
-                        </div>
-                        <div class="form-group">
-                            <label>Taux : <span id="taux_val" style="color:var(--primary-blue);">3.20 %</span></label>
-                            <input type="range" id="taux" min="1.0" max="5.5" step="0.05" value="3.20" oninput="document.getElementById('taux_val').innerText = parseFloat(this.value).toFixed(2) + ' %'; calculate()">
-                        </div>
+                        <div class="form-group"><label>Durée : <span id="duree_val">20</span> ans</label><input type="range" id="duree" min="7" max="30" value="20" oninput="updateVal('duree_val', this.value, ''); calculate()"></div>
+                        <div class="form-group"><label>Taux : <span id="taux_val" style="color:var(--primary-blue);">3.20 %</span></label><input type="range" id="taux" min="1.0" max="5.5" step="0.05" value="3.20" oninput="document.getElementById('taux_val').innerText = parseFloat(this.value).toFixed(2) + ' %'; calculate()"></div>
                     </form>
-
-                    <div class="saved-section">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <h4 style="margin:0;">Mes Scénarios</h4>
-                            <button class="btn-ghost" onclick="saveScenario()">+ Sauvegarder</button>
-                        </div>
-                        <div class="saved-list" id="saved-list"></div>
-                    </div>
                 </div>
 
                 <div class="sticky-results">
-                    <div class="donut-chart" id="chart-bg">
-                        <div class="donut-hole">
-                            <span class="main-metric" id="res_mensualite">0 €</span>
-                            <span style="font-size:0.8em; opacity:0.7;">PAR MOIS</span>
-                        </div>
-                    </div>
-                    
-                    <div id="badge_endettement" style="background:rgba(16,185,129,0.2); color:#34d399; display:inline-block; padding:5px 10px; border-radius:20px; font-weight:bold; font-size:0.9em;">
-                        33% Endettement
-                    </div>
-
+                    <div class="donut-chart" id="chart-bg"><div class="donut-hole"><span class="main-metric" id="res_mensualite">0 €</span><span style="font-size:0.8em; opacity:0.7;">PAR MOIS</span></div></div>
+                    <div id="badge_endettement" style="background:rgba(16,185,129,0.2); color:#34d399; display:inline-block; padding:5px 10px; border-radius:20px; font-weight:bold; font-size:0.9em;">33% Endettement</div>
                     <div style="margin-top:20px; text-align:left; border-top:1px solid rgba(255,255,255,0.2); padding-top:15px;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                            <span style="opacity:0.7;">Frais Notaire (?)</span>
-                            <span style="font-weight:700;" id="res_notaire">0 €</span>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                            <span style="opacity:0.7;">Frais Agence (inclus)</span>
-                            <span style="font-weight:700;" id="res_agence_display">10 000 €</span>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                            <span style="opacity:0.7;">Coût Crédit</span>
-                            <span style="font-weight:700;" id="res_cout">0 €</span>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; font-size:1.1em; color:var(--accent-gold); margin-top:10px;">
-                            <span>À Financer</span>
-                            <span style="font-weight:800;" id="res_financer">0 €</span>
-                        </div>
-                        
-                        <div id="res_capacite_box" style="display:none; background:rgba(255,255,255,0.1); padding:10px; border-radius:8px; margin-top:15px; text-align:center;">
-                            <small>Budget Achat Max</small><br>
-                            <strong style="font-size:1.4em; color:var(--success);" id="res_capacite_achat">0 €</strong>
-                        </div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span style="opacity:0.7;">Notaire + Agence</span><span style="font-weight:700;" id="res_frais_annexes">0 €</span></div>
+                        <div style="display:flex; justify-content:space-between; font-size:1.1em; color:var(--accent-gold); margin-top:10px;"><span>À Financer</span><span style="font-weight:800;" id="res_financer">0 €</span></div>
+                        <div id="res_capacite_box" style="display:none; background:rgba(255,255,255,0.1); padding:10px; border-radius:8px; margin-top:15px; text-align:center;"><small>Budget Achat Max</small><br><strong style="font-size:1.4em; color:var(--success);" id="res_capacite_achat">0 €</strong></div>
                     </div>
-
-                    <button class="btn-primary" style="margin-top:20px;" onclick="openTableModal()">
-                        <span>📊</span> Voir le Tableau d'Amortissement
-                    </button>
-                    <button class="btn-outline" onclick="generatePDF()">
-                        <span class="loader" id="pdf-loader"></span>
-                        <span id="pdf-btn-text">📥 Télécharger le Dossier PDF</span>
-                    </button>
+                    <button class="btn-primary" style="margin-top:20px;" onclick="openTableModal()"><span>📊</span> Tableau d'Amortissement</button>
+                    <button class="btn-outline" onclick="generatePDF()">📥 Télécharger PDF</button>
+                    <button class="btn-secondary" onclick="shareSimulation()">🔗 Copier le lien</button>
                 </div>
             </div>
         </section>
 
-        <!-- INVESTISSEMENT -->
+        <!-- RENTABILITE & FISCALITE -->
         <section id="patrimoine-page" style="display: none;">
             <div class="calc-wrapper">
                 <div class="input-section">
-                    <h2>Calculateur Rentabilité</h2>
-                    <div class="form-group"><label>Prix Achat</label><input type="number" id="y_prix" class="form-control" value="200000" oninput="calcYield()"></div>
+                    <h2>Rentabilité & Fiscalité</h2>
+                    <div class="form-group"><label>Prix Achat (FAI)</label><input type="number" id="y_prix" class="form-control" value="200000" oninput="calcYield()"></div>
                     <div class="form-group"><label>Loyer Mensuel (CC)</label><input type="number" id="y_loyer" class="form-control" value="950" oninput="calcYield()"></div>
                     <div class="form-group"><label>Charges Annuelles</label><input type="number" id="y_charges" class="form-control" value="1500" oninput="calcYield()"></div>
-                    <div class="form-group"><label>Mensualité Crédit (Optionnel)</label><input type="number" id="y_credit" class="form-control" value="850" oninput="calcYield()"></div>
+                    <div class="form-group"><label>Mensualité Crédit</label><input type="number" id="y_credit" class="form-control" value="850" oninput="calcYield()"></div>
+                    
+                    <!-- MODULE FISCALITE -->
+                    <div style="background:#f1f5f9; padding:15px; border-radius:8px; margin-top:20px;">
+                        <h4 style="margin-top:0; color:var(--primary-dark);">Fiscalité (Estimation LMNP)</h4>
+                        <div class="form-group">
+                            <label>Votre TMI (Tranche Marginale d'Imposition)</label>
+                            <select id="y_tmi" class="form-control" onchange="calcYield()">
+                                <option value="0">0 %</option>
+                                <option value="11">11 %</option>
+                                <option value="30" selected>30 %</option>
+                                <option value="41">41 %</option>
+                                <option value="45">45 %</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Régime Fiscal</label>
+                            <select id="y_regime" class="form-control" onchange="calcYield()">
+                                <option value="micro">Micro-BIC (Abattement 50%)</option>
+                                <option value="reel">Réel (Amortissement)</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="sticky-results">
                     <div style="opacity:0.8;">RENTABILITÉ BRUTE</div>
                     <div style="font-size:3em; font-weight:800; color:var(--accent-gold); line-height:1;" id="y_brut">5.7%</div>
+                    
                     <div style="background:rgba(255,255,255,0.1); padding:15px; border-radius:12px; margin:20px 0;">
-                        <div style="font-size:1.5em; font-weight:700;" id="y_cashflow">+ 100 €</div>
-                        <small>CASHFLOW / MOIS</small>
+                        <div style="font-size:1.5em; font-weight:700;" id="y_cashflow_net">0 €</div>
+                        <small>CASHFLOW NET / MOIS</small>
+                        <div style="font-size:0.8em; opacity:0.7; margin-top:5px;" id="y_impot_detail">Après impôts</div>
                     </div>
+
                     <div style="display:flex; justify-content:space-between; padding:0 20px;">
-                        <div><strong id="y_net">4.9%</strong><br><small>Net</small></div>
-                        <div><strong id="y_revenu">11.4k</strong><br><small>Revenu/an</small></div>
+                        <div><strong id="y_net">4.9%</strong><br><small>Nette</small></div>
+                        <div><strong id="y_cashflow_brut">0 €</strong><br><small>CF Brut</small></div>
                     </div>
                 </div>
             </div>
@@ -385,18 +288,19 @@
 
     </div>
 
+    <!-- FOOTER (RESTAURÉ) -->
     <footer class="site-footer">
         <div class="footer-inner">
             <div class="footer-col">
                 <h4>Horizon Pierre</h4>
-                <p style="opacity:0.7; line-height:1.6;">L'outil de référence pour les investisseurs immobiliers intelligents. Précision bancaire, design moderne.</p>
+                <p style="opacity:0.7;">L'outil communautaire 100% gratuit.</p>
             </div>
             <div class="footer-col">
                 <h4>Outils</h4>
                 <ul>
-                    <li onclick="navTo('calculator', document.querySelectorAll('.nav-link')[1])">Simulateur Crédit</li>
-                    <li onclick="navTo('patrimoine', document.querySelectorAll('.nav-link')[2])">Rentabilité Locative</li>
-                    <li onclick="navTo('dpe', document.querySelectorAll('.nav-link')[3])">Audit DPE</li>
+                    <li onclick="navTo('calculator')">Simulateur</li>
+                    <li onclick="navTo('patrimoine')">Rentabilité</li>
+                    <li onclick="navTo('dpe')">Audit DPE</li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -404,42 +308,43 @@
                 <ul>
                     <li>Mentions Légales</li>
                     <li>Politique de Confidentialité</li>
-                    <li>&copy; 2025 Horizon Pierre</li>
                 </ul>
             </div>
         </div>
     </footer>
 
-    <!-- MODAL AMORTISSEMENT -->
+    <!-- MODAL TABLE -->
     <div id="table-modal" class="modal-overlay">
         <div class="modal-card">
-            <div class="modal-header">
-                <h3 style="margin:0; color:var(--primary-dark);">Tableau d'Amortissement (Annuel)</h3>
-                <button class="close-modal" onclick="closeTableModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <table class="table-responsive">
-                    <thead><tr><th>Année</th><th>Restant Dû</th><th>Mensualité</th><th>Intérêts</th><th>Capital</th></tr></thead>
-                    <tbody id="amortization-body"></tbody>
-                </table>
-            </div>
+            <div class="modal-header"><h3>Tableau d'Amortissement</h3><button class="close-modal" onclick="closeTableModal()">×</button></div>
+            <div class="modal-body"><table class="table-responsive"><thead><tr><th>Année</th><th>Restant Dû</th><th>Mensualité</th><th>Intérêts</th><th>Capital</th></tr></thead><tbody id="amortization-body"></tbody></table></div>
         </div>
     </div>
 
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="toast">✅ Lien copié dans le presse-papier !</div>
+
+    <!-- CHATBASE EMBED -->
     <script>
-        // --- NAVIGATION ---
+        window.embeddedChatbotConfig = {
+            chatbotId: "VOTRE_ID_CHATBASE", // REMPLACEZ CECI PAR VOTRE ID CHATBASE
+            domain: "www.chatbase.co"
+        }
+    </script>
+    <script src="https://www.chatbase.co/embed.min.js" defer></script>
+
+    <script>
+        // --- CORE NAVIGATION ---
         function navTo(page, el) {
             document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-            document.getElementById(page + (page==='home'?'-page':'-page')).style.display = 'block';
+            document.getElementById(page + '-page').style.display = 'block';
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             if(el) el.classList.add('active');
-            window.scrollTo(0, 0);
-            if(page==='calculator') calculate();
-            if(page==='patrimoine') calcYield();
-            if(page==='dpe') calcDPE();
+            window.scrollTo(0,0);
+            updateURL(page);
         }
 
-        // --- CALCULATOR ENGINE ---
+        // --- CALCULATOR & URL MANAGER ---
         let mode = 'mensualite';
         const formatMoney = (n) => parseFloat(n).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
         const updateVal = (id, val, suffix) => document.getElementById(id).innerText = formatMoney(val) + suffix;
@@ -447,9 +352,7 @@
         function setMode(m) {
             mode = m;
             document.getElementById('btn-mens').style.background = m==='mensualite' ? '#fff' : 'transparent';
-            document.getElementById('btn-mens').style.color = m==='mensualite' ? '#0f172a' : '#64748b';
             document.getElementById('btn-cap').style.background = m==='capacite' ? '#fff' : 'transparent';
-            document.getElementById('btn-cap').style.color = m==='capacite' ? '#0f172a' : '#64748b';
             
             if(m === 'capacite') {
                 document.getElementById('wrapper-prix').style.display='none';
@@ -471,8 +374,7 @@
             const agence = parseFloat(document.getElementById('agence').value) || 0;
             const duree = parseFloat(document.getElementById('duree').value) || 20;
             const taux = parseFloat(document.getElementById('taux').value) / 100;
-            const t_ass = 0.0034;
-            const t_notaire = 0.075; 
+            const t_ass = 0.0034; const t_notaire = 0.075; 
 
             let K = 0, prix = 0, m_pret = 0, m_tot = 0, notaire = 0;
 
@@ -481,14 +383,11 @@
                 notaire = prix * t_notaire;
                 let besoin = prix + notaire + agence;
                 K = Math.max(0, besoin - apport);
-                let tm = taux/12;
-                let mois = duree*12;
+                let tm = taux/12; let mois = duree*12;
                 if(K>0) m_pret = (K * tm) / (1 - Math.pow(1+tm, -mois));
             } else {
                 let budget = parseFloat(document.getElementById('budget_mensuel').value) || 0;
-                m_tot = budget;
-                let mois = duree*12;
-                let tm = taux/12;
+                m_tot = budget; let mois = duree*12; let tm = taux/12;
                 let facteur = (tm / (1 - Math.pow(1+tm, -mois))) + (t_ass/12);
                 K = budget / facteur;
                 prix = (K + apport - agence) / (1 + t_notaire);
@@ -503,13 +402,10 @@
             let cout_credit = (m_tot * duree * 12) - K;
 
             document.getElementById('res_mensualite').innerText = formatMoney(m_tot) + " €";
-            document.getElementById('res_notaire').innerText = formatMoney(notaire) + " €";
-            document.getElementById('res_agence_display').innerText = formatMoney(agence) + " €"; // Added Agency Display
+            document.getElementById('res_frais_annexes').innerText = formatMoney(notaire + agence) + " €";
             document.getElementById('res_financer').innerText = formatMoney(K) + " €";
-            document.getElementById('res_cout').innerText = formatMoney(cout_credit) + " €";
 
-            let endettement = 0;
-            if(rev > 0) endettement = (m_tot / rev) * 100;
+            let endettement = 0; if(rev > 0) endettement = (m_tot / rev) * 100;
             let badge = document.getElementById('badge_endettement');
             badge.innerText = endettement.toFixed(1) + "% Endettement";
             if(endettement <= 35) { badge.style.background = "rgba(16,185,129,0.2)"; badge.style.color="#34d399"; }
@@ -518,62 +414,112 @@
             let p_int = 30; 
             document.getElementById('chart-bg').style.background = `conic-gradient(var(--chart-capital) 0% 60%, var(--chart-interest) 60% 90%, var(--chart-insurance) 90% 100%)`;
             
-            // Storing agence in window.lastCalc for PDF
             window.lastCalc = { K, taux, duree, m_pret, m_tot, m_ass, notaire, cout_credit, prix, agence, apport };
         }
 
-        // --- AMORTIZATION ---
-        function openTableModal() { document.getElementById('table-modal').style.display = 'flex'; generateTable(); }
-        function closeTableModal() { document.getElementById('table-modal').style.display = 'none'; }
-        function generateTable() {
-            let { K, taux, duree, m_pret } = window.lastCalc || {};
-            if(!K) return;
-            let html = '';
-            let solde = K;
-            let tm = taux / 12;
-            for(let an=1; an<=duree; an++) {
-                let int_an = 0; let cap_an = 0;
-                for(let m=0; m<12; m++) {
-                    let int = solde * tm; let cap = m_pret - int;
-                    if(an===duree && m===11) cap = solde;
-                    int_an += int; cap_an += cap; solde -= cap;
-                    if(solde < 0) solde = 0;
-                }
-                html += `<tr><td>Année ${an}</td><td>${formatMoney(solde)} €</td><td>${formatMoney(m_pret)} €</td><td>${formatMoney(int_an)} €</td><td><strong style="color:var(--success)">${formatMoney(cap_an)} €</strong></td></tr>`;
+        // --- YIELD + FISCALITE ---
+        function calcYield() {
+            let p = parseFloat(document.getElementById('y_prix').value) || 0;
+            let l = parseFloat(document.getElementById('y_loyer').value) || 0;
+            let c = parseFloat(document.getElementById('y_charges').value) || 0;
+            let cred = parseFloat(document.getElementById('y_credit').value) || 0;
+            let tmi = parseFloat(document.getElementById('y_tmi').value) || 0;
+            let regime = document.getElementById('y_regime').value;
+
+            let an_rent = l * 12;
+            let brut = (an_rent / p) * 100;
+            let net = ((an_rent - c)/p)*100;
+            let cf_brut = l - cred - (c/12); // Avant impôt
+
+            // Calcul Impôt (Simplifié LMNP)
+            let impot = 0;
+            let csg = 0.172; // 17.2%
+            
+            if(regime === 'micro') {
+                // Abattement 50%
+                let base = an_rent * 0.5;
+                impot = base * ( (tmi/100) + csg );
+            } else {
+                // Réel simpliste : (Loyer - Charges - Intérêts - Amortissement)
+                // Hypothèse amortissement: 3% du prix (hors terrain) -> disons 2.5% du prix total
+                let amortissement = p * 0.025; 
+                let interet_estime = p * 0.03; // Moyenne 3%
+                let base = an_rent - c - interet_estime - amortissement;
+                if(base < 0) base = 0;
+                impot = base * ( (tmi/100) + csg );
             }
-            document.getElementById('amortization-body').innerHTML = html;
+            
+            let impot_mensuel = impot / 12;
+            let cf_net = cf_brut - impot_mensuel;
+
+            document.getElementById('y_brut').innerText = brut.toFixed(1) + "%";
+            document.getElementById('y_net').innerText = net.toFixed(1) + "%";
+            document.getElementById('y_cashflow_brut').innerText = Math.round(cf_brut) + " €";
+            
+            let cfNetEl = document.getElementById('y_cashflow_net');
+            cfNetEl.innerText = (cf_net>0?"+":"") + Math.round(cf_net) + " €";
+            cfNetEl.style.color = cf_net >= 0 ? "var(--success)" : "var(--danger)";
+            
+            document.getElementById('y_impot_detail').innerText = `Impôt estimé : ${Math.round(impot_mensuel)} €/mois`;
         }
 
-        // --- SAVES ---
-        function saveScenario() {
-            let name = prompt("Nom du scénario:");
-            if(!name) return;
-            let saves = JSON.parse(localStorage.getItem('hp_saves') || '[]');
-            saves.push({ name, date: new Date().toLocaleDateString(), prix: document.getElementById('prix_bien').value, mensualite: document.getElementById('res_mensualite').innerText });
-            localStorage.setItem('hp_saves', JSON.stringify(saves));
-            renderSaves();
+        function calcDPE() {
+            let an = parseInt(document.getElementById('dpe_annee').value); let ch = document.getElementById('dpe_chauffage').value; let score = 0;
+            if(an <= 1970) score = 450; else if(an <= 1990) score = 250; else if(an <= 2010) score = 150; else score = 80;
+            if(ch === 'elec') score *= 1.1; if(ch === 'pac') score *= 0.6;
+            let l = 'A', c = 'var(--dpe-a)', t = 'Excellent';
+            if(score > 420) { l='G'; c='var(--dpe-g)'; t='Passoire thermique'; } else if(score > 330) { l='F'; c='var(--dpe-f)'; t='Passoire thermique'; } else if(score > 250) { l='E'; c='var(--dpe-e)'; t='Moyen'; } else if(score > 180) { l='D'; c='var(--dpe-d)'; t='Standard'; } else if(score > 110) { l='C'; c='var(--dpe-c)'; t='Bon'; }
+            let badge = document.getElementById('dpe_badge'); badge.innerText = l; badge.style.background = c; document.getElementById('dpe_text').innerText = t;
         }
-        function renderSaves() {
-            let saves = JSON.parse(localStorage.getItem('hp_saves') || '[]');
-            let div = document.getElementById('saved-list');
-            div.innerHTML = '';
-            saves.forEach((s, idx) => {
-                div.innerHTML += `<div class="saved-card" onclick="loadSave(${idx})"><div class="saved-info"><span class="saved-name">${s.name}</span><span class="saved-detail">${s.mensualite} • ${s.date}</span></div><span class="delete-btn" onclick="deleteSave(event, ${idx})">×</span></div>`;
+
+        // --- URL SHARING & LOADING ---
+        function updateURL(section) {
+            // Optionnel: Mettre à jour l'URL sans recharger
+            // const params = new URLSearchParams(window.location.search);
+            // history.replaceState({}, '', `${location.pathname}?${params}`);
+        }
+
+        function shareSimulation() {
+            const params = new URLSearchParams();
+            params.set('p', document.getElementById('prix_bien').value);
+            params.set('a', document.getElementById('apport').value);
+            params.set('d', document.getElementById('duree').value);
+            params.set('t', document.getElementById('taux').value);
+            params.set('tab', 'calculator');
+            
+            const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+            navigator.clipboard.writeText(url).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
             });
         }
-        function deleteSave(e, idx) { e.stopPropagation(); let saves = JSON.parse(localStorage.getItem('hp_saves') || '[]'); saves.splice(idx, 1); localStorage.setItem('hp_saves', JSON.stringify(saves)); renderSaves(); }
 
-        // --- PDF V3 (PEDAGOGIQUE & COMPLET) ---
+        function loadFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            if(params.has('p')) {
+                document.getElementById('prix_bien').value = params.get('p');
+                document.getElementById('apport').value = params.get('a');
+                document.getElementById('duree').value = params.get('d');
+                document.getElementById('taux').value = params.get('t');
+                updateVal('duree_val', params.get('d'), '');
+                // Force calculate
+                calculate();
+                
+                // Si tab rentabilité
+                if(params.get('tab') === 'patrimoine') navTo('patrimoine');
+                else navTo('calculator', document.querySelectorAll('.nav-link')[1]);
+            } else {
+                calculate(); // Default
+            }
+        }
+
+        // --- PDF ---
         async function generatePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const data = window.lastCalc;
             if (!data || !data.K) { alert("Veuillez faire une simulation."); return; }
-            
-            const btnText = document.getElementById('pdf-btn-text');
-            const loader = document.getElementById('pdf-loader');
-            btnText.innerText = "Génération...";
-            loader.style.display = "inline-block";
 
             // En-tête
             doc.setFillColor(15, 23, 42); doc.rect(0, 0, 210, 35, 'F');
@@ -587,7 +533,7 @@
 
             // SECTION 1: LE COÛT (Ce que je paie)
             doc.setTextColor(0); doc.setFontSize(14); doc.setFont("helvetica", "bold");
-            doc.text("1. Coût Total de l'Opération (Ce que vous achetez)", 15, y);
+            doc.text("1. Coût Total de l'Opération", 15, y);
             doc.setLineWidth(0.5); doc.line(15, y+2, 195, y+2);
             y += 10;
             
@@ -596,14 +542,13 @@
             doc.text("Frais d'Agence :", 20, y); doc.text(`${formatMoney(data.agence)} €`, 160, y, {align:'right'}); y+=8;
             doc.text("Frais de Notaire (Estimés) :", 20, y); doc.text(`${formatMoney(data.notaire)} €`, 160, y, {align:'right'}); y+=10;
             
-            // Total Ligne
             doc.setFillColor(240); doc.rect(15, y-6, 180, 10, 'F');
             doc.setFont("helvetica", "bold"); 
             let totalCout = parseFloat(data.prix) + parseFloat(data.agence) + parseFloat(data.notaire);
             doc.text("TOTAL DU PROJET :", 20, y); doc.text(`${formatMoney(totalCout)} €`, 160, y, {align:'right'}); y+=20;
 
             // SECTION 2: LE FINANCEMENT (Comment je paie)
-            doc.setFontSize(14); doc.text("2. Plan de Financement (Vos Ressources)", 15, y);
+            doc.setFontSize(14); doc.text("2. Plan de Financement", 15, y);
             doc.line(15, y+2, 195, y+2); y += 10;
             
             doc.setFontSize(11); doc.setFont("helvetica", "normal");
@@ -628,7 +573,6 @@
             doc.text("4. Tableau d'Amortissement Prévisionnel (Complet)", 15, y);
             y += 5;
 
-            // Generation des données complètes (toutes les années)
             let rows = []; let solde = data.K; let tm = data.taux / 12;
             for(let an=1; an<= data.duree; an++) {
                 let int_an = 0; let cap_an = 0;
@@ -639,51 +583,26 @@
                 rows.push([`Année ${an}`, `${formatMoney(solde)} €`, `${formatMoney(int_an)} €`, `${formatMoney(cap_an)} €`]);
             }
 
-            doc.autoTable({
-                startY: y,
-                head: [['Année', 'Capital Restant Dû (Fin année)', 'Intérêts Payés', 'Capital Remboursé']],
-                body: rows,
-                theme: 'striped',
-                headStyles: { fillColor: [15, 23, 42] },
-                styles: { fontSize: 10, cellPadding: 3 },
-                pageBreak: 'auto'
-            });
+            doc.autoTable({ startY: y, head: [['Année', 'Restant Dû', 'Intérêts', 'Capital']], body: rows, theme: 'striped', headStyles: { fillColor: [15, 23, 42] }, styles: { fontSize: 10, cellPadding: 3 }, pageBreak: 'auto' });
 
-            // Footer sur toutes les pages
-            const pageCount = doc.internal.getNumberOfPages();
-            for(let i = 1; i <= pageCount; i++) { 
-                doc.setPage(i); 
-                doc.setFontSize(8); 
-                doc.setTextColor(150); 
-                doc.text(`Page ${i} / ${pageCount} - Document généré par Horizon Pierre.`, 105, 285, null, null, "center"); 
-            }
-            
             doc.save("Etude_HorizonPierre_Complete.pdf");
-            setTimeout(() => { btnText.innerText = "📥 Télécharger le Dossier PDF"; loader.style.display = "none"; }, 1000);
         }
 
-        // --- YIELD / DPE ---
-        function calcYield() {
-            let p = parseFloat(document.getElementById('y_prix').value);
-            let l = parseFloat(document.getElementById('y_loyer').value);
-            let c = parseFloat(document.getElementById('y_charges').value);
-            let cred = parseFloat(document.getElementById('y_credit').value);
-            let an_rent = l * 12; let brut = (an_rent / p) * 100; let net = ((an_rent - c)/p)*100; let cf = l - cred - (c/12);
-            document.getElementById('y_brut').innerText = brut.toFixed(1) + "%";
-            document.getElementById('y_net').innerText = net.toFixed(1) + "%";
-            document.getElementById('y_revenu').innerText = (an_rent/1000).toFixed(1) + "k";
-            let cfEl = document.getElementById('y_cashflow'); cfEl.innerText = (cf>0?"+":"") + Math.round(cf) + " €"; cfEl.style.color = cf >= 0 ? "var(--success)" : "var(--danger)";
-        }
-        function calcDPE() {
-            let an = parseInt(document.getElementById('dpe_annee').value); let ch = document.getElementById('dpe_chauffage').value; let score = 0;
-            if(an <= 1970) score = 450; else if(an <= 1990) score = 250; else if(an <= 2010) score = 150; else score = 80;
-            if(ch === 'elec') score *= 1.1; if(ch === 'pac') score *= 0.6;
-            let l = 'A', c = 'var(--dpe-a)', t = 'Excellent';
-            if(score > 420) { l='G'; c='var(--dpe-g)'; t='Passoire thermique'; } else if(score > 330) { l='F'; c='var(--dpe-f)'; t='Passoire thermique'; } else if(score > 250) { l='E'; c='var(--dpe-e)'; t='Moyen'; } else if(score > 180) { l='D'; c='var(--dpe-d)'; t='Standard'; } else if(score > 110) { l='C'; c='var(--dpe-c)'; t='Bon'; }
-            let badge = document.getElementById('dpe_badge'); badge.innerText = l; badge.style.background = c; document.getElementById('dpe_text').innerText = t;
+        function openTableModal() { document.getElementById('table-modal').style.display = 'flex'; generateTable(); }
+        function closeTableModal() { document.getElementById('table-modal').style.display = 'none'; }
+        function generateTable() {
+            let { K, taux, duree, m_pret } = window.lastCalc || {}; if(!K) return;
+            let html = ''; let solde = K; let tm = taux / 12;
+            for(let an=1; an<=duree; an++) {
+                let int_an = 0; let cap_an = 0;
+                for(let m=0; m<12; m++) { let int = solde * tm; let cap = m_pret - int; int_an += int; cap_an += cap; solde -= cap; if(solde < 0) solde = 0; }
+                html += `<tr><td>Année ${an}</td><td>${formatMoney(solde)} €</td><td>${formatMoney(m_pret)} €</td><td>${formatMoney(int_an)} €</td><td><strong style="color:var(--success)">${formatMoney(cap_an)} €</strong></td></tr>`;
+            }
+            document.getElementById('amortization-body').innerHTML = html;
         }
 
-        renderSaves(); calculate();
+        // Init
+        loadFromURL();
     </script>
 </body>
 </html>
