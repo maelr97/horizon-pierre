@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
-        /* --- DESIGN SYSTEM (v24) --- */
+        /* --- DESIGN SYSTEM (v28) --- */
         :root {
             --primary-dark: #0f172a;
             --primary-blue: #3b82f6;
@@ -62,8 +62,8 @@
 
         .brand { font-size: 1.5em; font-weight: 800; color: var(--primary-dark); letter-spacing: -1px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 10px; }
         .brand span { color: var(--primary-blue); }
-        .main-nav { display: flex; gap: 5px; }
-        .nav-link { padding: 8px 16px; text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9em; border-radius: 8px; transition: all 0.2s; cursor: pointer; }
+        .main-nav { display: flex; gap: 5px; overflow-x: auto; padding-bottom: 5px;}
+        .nav-link { padding: 8px 12px; text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9em; border-radius: 8px; transition: all 0.2s; cursor: pointer; white-space: nowrap; }
         .nav-link:hover { background: #f1f5f9; color: var(--primary-dark); }
         .nav-link.active { background-color: var(--primary-dark); color: white; }
 
@@ -111,12 +111,49 @@
 
         .dpe-badge { font-size: 4em; font-weight: 800; color: white; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; border-radius: 20px; margin: 0 auto 20px auto; }
         
+        /* Lexique Styles */
+        .lexique-item { 
+            border-bottom: 1px dashed #e2e8f0; 
+            padding: 15px 0; 
+        }
+        .lexique-item:last-child { border-bottom: none; }
+        .lexique-item h4 { 
+            margin: 0 0 5px 0; 
+            color: var(--primary-blue);
+        }
+        /* Acquisition Styles */
+        .acquisition-result {
+            background: #e0f2fe;
+            color: var(--primary-dark);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .acquisition-result h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+            color: var(--primary-blue);
+        }
+        .acquisition-result strong {
+            font-size: 3em;
+            font-weight: 800;
+            display: block;
+            line-height: 1.1;
+            color: var(--success);
+        }
+        .acquisition-result small {
+            font-size: 1em;
+            color: var(--text-muted);
+        }
+
+
         /* Mobile */
         @media (max-width: 768px) {
             .calc-wrapper { grid-template-columns: 1fr; }
             .sticky-results { position: relative; top: 0; margin-top: 20px; }
             .header-inner { flex-direction: column; gap: 15px; }
-            .main-nav { width: 100%; justify-content: center; overflow-x: auto; }
+            .main-nav { width: 100%; justify-content: flex-start; overflow-x: auto; }
             .footer-inner { grid-template-columns: 1fr; text-align: center; }
         }
     </style>
@@ -132,7 +169,10 @@
                 <a class="nav-link active" onclick="navTo('home', this)">Accueil</a>
                 <a class="nav-link" onclick="navTo('calculator', this)">Crédit</a>
                 <a class="nav-link" onclick="navTo('patrimoine', this)">Rentabilité</a>
-                <a class="nav-link" onclick="navTo('dpe', this)">DPE</a>
+                <a class="nav-link" onclick="navTo('energie', this)">Audit Énergie</a>
+                <a class="nav-link" onclick="navTo('maintenance', this)">Maintenance</a>
+                <a class="nav-link" onclick="navTo('acquisition', this)">Acquisition</a> <!-- NOUVEL ONGLET -->
+                <a class="nav-link" onclick="navTo('lexique', this)">Lexique</a>
             </div>
         </div>
     </nav>
@@ -157,10 +197,15 @@
                     <h3>Rentabilité & Fiscalité</h3>
                     <p style="color:var(--text-muted)">Estimez votre Cashflow Net d'impôts (LMNP, Réel).</p>
                 </div>
-                <div class="glass-panel" onclick="navTo('dpe', document.querySelectorAll('.nav-link')[3])">
+                <div class="glass-panel" onclick="navTo('energie', document.querySelectorAll('.nav-link')[3])">
                     <span style="font-size: 2em;">🌡️</span>
-                    <h3>Audit DPE</h3>
+                    <h3>Audit Énergie (DPE)</h3>
                     <p style="color:var(--text-muted)">Estimez la classe énergétique en 3 clics.</p>
+                </div>
+                 <div class="glass-panel" onclick="navTo('maintenance', document.querySelectorAll('.nav-link')[4])">
+                    <span style="font-size: 2em;">🛠️</span>
+                    <h3>Maintenance & Risques</h3>
+                    <p style="color:var(--text-muted)">Estimez la provision annuelle pour les imprévus (travaux, vacance).</p>
                 </div>
             </div>
         </section>
@@ -215,6 +260,12 @@
                     <div class="form-group"><label>Charges Annuelles</label><input type="number" id="y_charges" class="form-control" value="1500" oninput="calcYield()"></div>
                     <div class="form-group"><label>Mensualité Crédit</label><input type="number" id="y_credit" class="form-control" value="850" oninput="calcYield()"></div>
                     
+                    <!-- FRAIS DE GESTION -->
+                    <div class="form-group">
+                        <label>Frais de Gestion Locative <span id="y_gestion_val">8.0</span> %</label>
+                        <input type="range" id="y_gestion_rate" min="0" max="15" step="0.5" value="8.0" oninput="document.getElementById('y_gestion_val').innerText = parseFloat(this.value).toFixed(1); calcYield()">
+                    </div>
+                    
                     <!-- MODULE FISCALITE -->
                     <div style="background:#f1f5f9; padding:15px; border-radius:8px; margin-top:20px;">
                         <h4 style="margin-top:0; color:var(--primary-dark);">Fiscalité (Estimation LMNP)</h4>
@@ -255,11 +306,12 @@
             </div>
         </section>
 
-        <!-- DPE -->
-        <section id="dpe-page" style="display:none;">
+        <!-- AUDIT ÉNERGIE (DPE) -->
+        <section id="energie-page" style="display:none;">
             <div class="calc-wrapper">
                 <div class="input-section">
-                    <h2>Audit Énergétique</h2>
+                    <h2 style="color:var(--primary-dark);">Audit de Performance Énergétique (DPE)</h2>
+                    <p style="color:var(--text-muted);">Estimez rapidement la classe énergétique de votre futur bien (A à G).</p>
                     <div class="form-group">
                         <label>Construction</label>
                         <select id="dpe_annee" class="form-control" onchange="calcDPE()">
@@ -279,12 +331,129 @@
                     </div>
                 </div>
                 <div class="sticky-results">
-                    <div style="opacity:0.8; margin-bottom:10px;">ESTIMATION</div>
+                    <div style="opacity:0.8;">CLASSE ÉNERGÉTIQUE ESTIMÉE</div>
                     <div class="dpe-badge" id="dpe_badge" style="background:var(--dpe-c);">C</div>
                     <div id="dpe_text" style="font-weight:600;">Logement économe</div>
                 </div>
             </div>
         </section>
+        
+        <!-- MAINTENANCE ET RISQUES -->
+        <section id="maintenance-page" style="display:none;">
+            <div class="calc-wrapper">
+                <div class="input-section">
+                    <h2>Provision Annuelle pour Risques</h2>
+                    <p style="color:var(--text-muted)">Anticipez les coûts imprévus et les périodes sans locataire pour sécuriser votre cashflow.</p>
+                    
+                    <h4 style="color:var(--primary-dark); margin-top:30px;">1. Risque de Vacance Locative</h4>
+                    <div class="form-group">
+                        <label>Loyer Annuel Estimé</label>
+                        <input type="number" id="maint_loyer_annuel" class="form-control" value="11400" oninput="calcMaintenance()">
+                    </div>
+                    <div class="form-group">
+                        <label>Vacance Locative Moyenne <span id="maint_vac_val">5.0</span> %</label>
+                        <input type="range" id="maint_vacance_rate" min="0" max="15" step="0.5" value="5" oninput="document.getElementById('maint_vac_val').innerText = this.value; calcMaintenance()">
+                    </div>
+
+                    <h4 style="color:var(--primary-dark); margin-top:30px;">2. Maintenance et Travaux</h4>
+                    <div class="form-group">
+                        <label>Prix d'Achat du Bien <span style="font-weight:normal; color:var(--text-muted);">(pour provision)</span></label>
+                        <input type="number" id="maint_prix_achat" class="form-control" value="200000" oninput="calcMaintenance()">
+                    </div>
+                     <div class="form-group">
+                        <label>État Général du Bien</label>
+                        <select id="maint_etat" class="form-control" onchange="calcMaintenance()">
+                            <option value="neuf">Neuf / Moins de 5 ans (0.5% du prix)</option>
+                            <option value="bon" selected>Bon / Récent (1.0% du prix)</option>
+                            <option value="moyen">Moyen / + de 20 ans (1.5% du prix)</option>
+                            <option value="vieux">À Rénover / Très Vieux (2.0% du prix)</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="sticky-results">
+                    <div style="opacity:0.8;">PROVISION TOTALE NÉCESSAIRE</div>
+                    <div style="font-size:3em; font-weight:800; color:var(--danger); line-height:1;" id="maint_total_annuel">0 €</div>
+                    <small style="opacity:0.7;">PAR AN</small>
+
+                    <div style="margin-top:30px; text-align:left; border-top:1px solid rgba(255,255,255,0.2); padding-top:15px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <span style="opacity:0.7;">Provision Mensuelle</span>
+                            <span style="font-weight:700;" id="maint_total_mensuel">0 €</span>
+                        </div>
+                        <div style="margin-top:20px; font-size:0.9em;">
+                            <h5 style="margin-bottom:5px;">Détail des Risques :</h5>
+                            <div style="display:flex; justify-content:space-between; opacity:0.7; margin-bottom:5px;"><span>Vacance Locative (Annuel)</span><span id="maint_vac_annuel">0 €</span></div>
+                            <div style="display:flex; justify-content:space-between; opacity:0.7;"><span>Maintenance/Travaux (Annuel)</span><span id="maint_travaux_annuel">0 €</span></div>
+                        </div>
+                    </div>
+                    
+                    <p style="font-size:0.8em; opacity:0.8; margin-top:30px;">*Cette somme doit idéalement être mise de côté chaque mois pour absorber les imprévus sans impacter votre trésorerie.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CALCULATEUR D'ACQUISITION (NOUVEAU) -->
+        <section id="acquisition-page" style="display:none;">
+            <div class="calc-wrapper">
+                <div class="input-section">
+                    <h2>Vitesse de Reconstitution de l'Apport</h2>
+                    <p style="color:var(--text-muted)">Calculez le temps nécessaire pour que le cashflow net généré par votre bien immobilier reconstitue votre apport initial.</p>
+                    
+                    <h4 style="color:var(--primary-dark); margin-top:30px;">Données de l'Opération</h4>
+                    <div class="form-group">
+                        <label>Apport Initial Investi</label>
+                        <input type="number" id="acq_apport" class="form-control" value="40000" oninput="calcAcquisition()">
+                    </div>
+                    <div class="form-group">
+                        <label>Cashflow Mensuel Net (après TOUTES les charges et impôts)</label>
+                        <input type="number" id="acq_cashflow" class="form-control" value="150" oninput="calcAcquisition()">
+                    </div>
+
+                </div>
+
+                <div class="sticky-results">
+                    <div style="opacity:0.8;">TEMPS NÉCESSAIRE POUR RECONSTITUER L'APPORT</div>
+                    <div class="acquisition-result">
+                        <h3>Délai estimé</h3>
+                        <strong id="acq_years">0</strong>
+                        <small id="acq_months">0 mois</small>
+                    </div>
+                    
+                    <p style="font-size:0.8em; opacity:0.8; margin-top:30px;">*Ce calcul est théorique et ne tient pas compte de l'inflation ou de l'appréciation du bien.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- LEXIQUE -->
+        <section id="lexique-page" style="display:none;">
+            <h2 style="color:var(--primary-dark); margin-bottom: 20px;">Lexique des Termes Techniques</h2>
+            <div class="glass-panel">
+                <div class="lexique-item">
+                    <h4>Cashflow</h4>
+                    <p style="color:var(--text-muted);">Le *Cashflow* (ou Flux de trésorerie) est la différence entre l'argent qui entre (loyers) et l'argent qui sort (mensualités de prêt, charges, impôts). Il peut être positif (vous gagnez de l'argent chaque mois) ou négatif (vous devez remettre de l'argent chaque mois).</p>
+                </div>
+                <div class="lexique-item">
+                    <h4>TMI (Tranche Marginale d'Imposition)</h4>
+                    <p style="color:var(--text-muted);">C'est le taux d'imposition le plus élevé auquel sont soumis vos revenus. C'est crucial pour calculer l'impôt que vous paierez sur vos loyers. Les tranches sont 0%, 11%, 30%, 41% et 45%.</p>
+                </div>
+                <div class="lexique-item">
+                    <h4>LMNP (Loueur Meublé Non Professionnel)</h4>
+                    <p style="color:var(--text-muted);">Un statut fiscal très avantageux pour les investisseurs qui louent un bien meublé. Il permet notamment, sous le régime réel, d'amortir le prix du bien pour réduire fortement l'assiette imposable.</p>
+                </div>
+                <div class="lexique-item">
+                    <h4>DPE (Diagnostic de Performance Énergétique)</h4>
+                    <p style="color:var(--text-muted);">Une évaluation de la consommation énergétique d'un logement, classée de A (très économe) à G (passoire thermique). C'est un critère d'achat de plus en plus important en France.</p>
+                </div>
+                <div class="lexique-item">
+                    <h4>Amortissement (Régime Réel)</h4>
+                    <p style="color:var(--text-muted);">Mécanisme comptable qui permet de déduire chaque année une partie du prix du bien (hors terrain) des revenus locatifs. C'est le principal avantage du LMNP qui permet d'éviter l'impôt sur les loyers pendant de nombreuses années.</p>
+                </div>
+            </div>
+        </section>
+
 
     </div>
 
@@ -300,12 +469,15 @@
                 <ul>
                     <li onclick="navTo('calculator')">Simulateur</li>
                     <li onclick="navTo('patrimoine')">Rentabilité</li>
-                    <li onclick="navTo('dpe')">Audit DPE</li>
+                    <li onclick="navTo('energie')">Audit Énergie</li>
+                    <li onclick="navTo('maintenance')">Maintenance & Risques</li>
+                    <li onclick="navTo('acquisition')">Vitesse d'Acquisition</li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Légal</h4>
+                <h4>Aide & Légal</h4>
                 <ul>
+                    <li onclick="navTo('lexique')">Lexique des termes</li>
                     <li>Mentions Légales</li>
                     <li>Politique de Confidentialité</li>
                 </ul>
@@ -338,11 +510,20 @@
         // --- CORE NAVIGATION ---
         function navTo(page, el) {
             document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-            document.getElementById(page + '-page').style.display = 'block';
+            // Mettre à jour l'ID de la page (dpe -> energie)
+            const targetId = page === 'dpe' ? 'energie' : page;
+            document.getElementById(targetId + '-page').style.display = 'block';
+            
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            if(el) el.classList.add('active');
+            if(el) document.querySelector(`.main-nav a[onclick="navTo('${page}', this)"]`).classList.add('active'); // Mettre à jour l'onglet actif
             window.scrollTo(0,0);
             updateURL(page);
+            
+            // Lancer les calculs initiaux pour les nouvelles pages
+            if(targetId === 'energie') calcDPE();
+            if(targetId === 'maintenance') calcMaintenance();
+            if(targetId === 'patrimoine') calcYield();
+            if(targetId === 'acquisition') calcAcquisition();
         }
 
         // --- CALCULATOR & URL MANAGER ---
@@ -426,26 +607,29 @@
             let cred = parseFloat(document.getElementById('y_credit').value) || 0;
             let tmi = parseFloat(document.getElementById('y_tmi').value) || 0;
             let regime = document.getElementById('y_regime').value;
+            const gestionRate = parseFloat(document.getElementById('y_gestion_rate').value) / 100 || 0;
 
             let an_rent = l * 12;
+            
+            let gestionAnnuelle = an_rent * gestionRate;
+            let gestionMensuelle = gestionAnnuelle / 12;
+
             let brut = (an_rent / p) * 100;
-            let net = ((an_rent - c)/p)*100;
-            let cf_brut = l - cred - (c/12); // Avant impôt
+            let net = ((an_rent - c - gestionAnnuelle)/p)*100; 
+            
+            let cf_brut = l - cred - (c/12) - gestionMensuelle;
 
             // Calcul Impôt (Simplifié LMNP)
             let impot = 0;
-            let csg = 0.172; // 17.2%
+            let csg = 0.172; 
             
             if(regime === 'micro') {
-                // Abattement 50%
                 let base = an_rent * 0.5;
                 impot = base * ( (tmi/100) + csg );
             } else {
-                // Réel simpliste : (Loyer - Charges - Intérêts - Amortissement)
-                // Hypothèse amortissement: 3% du prix (hors terrain) -> disons 2.5% du prix total
                 let amortissement = p * 0.025; 
-                let interet_estime = p * 0.03; // Moyenne 3%
-                let base = an_rent - c - interet_estime - amortissement;
+                let interet_estime = p * 0.03; 
+                let base = an_rent - c - gestionAnnuelle - interet_estime - amortissement;
                 if(base < 0) base = 0;
                 impot = base * ( (tmi/100) + csg );
             }
@@ -472,12 +656,81 @@
             if(score > 420) { l='G'; c='var(--dpe-g)'; t='Passoire thermique'; } else if(score > 330) { l='F'; c='var(--dpe-f)'; t='Passoire thermique'; } else if(score > 250) { l='E'; c='var(--dpe-e)'; t='Moyen'; } else if(score > 180) { l='D'; c='var(--dpe-d)'; t='Standard'; } else if(score > 110) { l='C'; c='var(--dpe-c)'; t='Bon'; }
             let badge = document.getElementById('dpe_badge'); badge.innerText = l; badge.style.background = c; document.getElementById('dpe_text').innerText = t;
         }
+        
+        // --- MAINTENANCE / RISK CALCULATION ---
+        function calcMaintenance() {
+            const loyerAnnuel = parseFloat(document.getElementById('maint_loyer_annuel').value) || 0;
+            const vacanceRate = parseFloat(document.getElementById('maint_vacance_rate').value) / 100 || 0;
+            const prixAchat = parseFloat(document.getElementById('maint_prix_achat').value) || 0;
+            const etat = document.getElementById('maint_etat').value;
+
+            // 1. Provision Vacance Locative
+            const provisionVacance = loyerAnnuel * vacanceRate;
+            
+            // 2. Provision Travaux (basée sur % du prix d'achat)
+            let travauxRate = 0.01; // Default
+            if (etat === 'neuf') travauxRate = 0.005; // 0.5%
+            else if (etat === 'bon') travauxRate = 0.01; // 1.0%
+            else if (etat === 'moyen') travauxRate = 0.015; // 1.5%
+            else if (etat === 'vieux') travauxRate = 0.02; // 2.0%
+            
+            const provisionTravaux = prixAchat * travauxRate;
+
+            // Total annuel
+            const totalAnnuel = provisionVacance + provisionTravaux;
+            const totalMensuel = totalAnnuel / 12;
+
+            // Update UI
+            document.getElementById('maint_vac_annuel').innerText = formatMoney(provisionVacance) + " €";
+            document.getElementById('maint_travaux_annuel').innerText = formatMoney(provisionTravaux) + " €";
+            document.getElementById('maint_total_annuel').innerText = formatMoney(totalAnnuel) + " €";
+            document.getElementById('maint_total_mensuel').innerText = formatMoney(totalMensuel) + " €";
+        }
+        
+        // --- ACQUISITION RATE CALCULATION (NOUVEAU) ---
+        function calcAcquisition() {
+            const apport = parseFloat(document.getElementById('acq_apport').value) || 0;
+            const cashflow = parseFloat(document.getElementById('acq_cashflow').value) || 0;
+            
+            const acqYearsEl = document.getElementById('acq_years');
+            const acqMonthsEl = document.getElementById('acq_months');
+
+            if (cashflow <= 0) {
+                acqYearsEl.innerText = '∞';
+                acqMonthsEl.innerText = "Cashflow Négatif (Impossible)";
+                acqYearsEl.parentElement.style.backgroundColor = '#fecaca'; // Red background
+                acqYearsEl.parentElement.style.color = 'var(--danger)';
+                acqYearsEl.style.color = 'var(--danger)';
+                return;
+            }
+
+            const totalMonths = apport / cashflow;
+            
+            const years = Math.floor(totalMonths / 12);
+            const months = Math.round(totalMonths % 12);
+
+            acqYearsEl.parentElement.style.backgroundColor = '#e0f2fe';
+            acqYearsEl.parentElement.style.color = 'var(--primary-dark)';
+            acqYearsEl.style.color = 'var(--success)';
+            
+            if (years >= 1) {
+                acqYearsEl.innerText = `${years} ans`;
+                acqMonthsEl.innerText = `et ${months} mois`;
+            } else {
+                 acqYearsEl.innerText = `${Math.round(totalMonths)} mois`;
+                 acqMonthsEl.innerText = `(Moins d'un an)`;
+            }
+
+            if (years === 0 && months === 0) {
+                acqYearsEl.innerText = '0 mois';
+                acqMonthsEl.innerText = '';
+            }
+        }
+
 
         // --- URL SHARING & LOADING ---
         function updateURL(section) {
-            // Optionnel: Mettre à jour l'URL sans recharger
-            // const params = new URLSearchParams(window.location.search);
-            // history.replaceState({}, '', `${location.pathname}?${params}`);
+            // Logic to update URL based on current calculator values
         }
 
         function shareSimulation() {
@@ -504,19 +757,17 @@
                 document.getElementById('duree').value = params.get('d');
                 document.getElementById('taux').value = params.get('t');
                 updateVal('duree_val', params.get('d'), '');
-                // Force calculate
                 calculate();
-                
-                // Si tab rentabilité
                 if(params.get('tab') === 'patrimoine') navTo('patrimoine');
                 else navTo('calculator', document.querySelectorAll('.nav-link')[1]);
             } else {
-                calculate(); // Default
+                navTo('home', document.querySelectorAll('.nav-link')[0]); // Start on home
             }
         }
 
         // --- PDF ---
         async function generatePDF() {
+            // PDF generation logic (same as v24)
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const data = window.lastCalc;
@@ -602,7 +853,7 @@
             document.getElementById('amortization-body').innerHTML = html;
         }
 
-        // Init
+        // Init: Load data from URL if present, otherwise start on home
         loadFromURL();
     </script>
 </body>
