@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
-        /* --- DESIGN SYSTEM (v33) --- */
+        /* --- DESIGN SYSTEM (v35) --- */
         :root {
             --primary-dark: #0f172a;
             --primary-blue: #3b82f6;
@@ -42,7 +42,7 @@
         .header-inner { max-width: 1100px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
         .site-wrapper { max-width: 1100px; margin: 40px auto; padding: 0 20px; flex: 1; width: 100%; box-sizing: border-box; }
         
-        /* FOOTER (Restauré Version 21) */
+        /* FOOTER */
         .site-footer { background: var(--primary-dark); color: white; padding: 40px 0; margin-top: 60px; }
         .footer-inner {
             max-width: 1100px;
@@ -68,17 +68,28 @@
         .nav-link.active { background-color: var(--primary-dark); color: white; }
 
         /* UI ELEMENTS */
-        .glass-panel { background: white; border-radius: 16px; border: 1px solid #e2e8f0; padding: 30px; transition: transform 0.2s; cursor: pointer; }
-        .glass-panel:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: var(--primary-blue); }
-        
         .btn-primary { background: var(--primary-blue); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
         .btn-primary:hover { background: #2563eb; }
-        .btn-outline { background: transparent; border: 2px solid rgba(255,255,255,0.3); color: white; padding: 10px; border-radius: 10px; width: 100%; cursor: pointer; margin-top: 10px; font-weight: 600; transition: 0.2s; }
-        .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: white; }
         .btn-secondary { background: #e0f2fe; color: var(--primary-blue); border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 10px; }
         .btn-secondary:hover { background: #bae6fd; }
-        .btn-gold { background: var(--accent-gold); color: var(--primary-dark); }
-        .btn-gold:hover { background: #facc15; }
+        .btn-affiliation { /* Style pour les boutons d'affiliation Or/Noir */
+            background: var(--accent-gold); 
+            color: var(--primary-dark); 
+            border: none; 
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            width: 100%; 
+            display: block; /* Important pour éviter le débordement sur mobile */
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .btn-affiliation:hover {
+            background: #d97706; /* Ton plus foncé */
+        }
 
         /* CALCULATOR */
         .calc-wrapper { display: grid; grid-template-columns: 1fr 380px; gap: 30px; align-items: start; }
@@ -86,96 +97,17 @@
         .sticky-results { position: sticky; top: 100px; background: var(--primary-dark); color: white; border-radius: 16px; padding: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); text-align: center; }
 
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 600; font-size: 0.9em; color: var(--text-muted); }
         .form-control { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em; box-sizing: border-box; }
-        .form-control:focus { border-color: var(--primary-blue); outline: none; }
-
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; cursor: pointer; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; background: #cbd5e1; border-radius: 3px; }
-        input[type=range]::-webkit-slider-thumb { height: 20px; width: 20px; border-radius: 50%; background: var(--primary-blue); -webkit-appearance: none; margin-top: -7px; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-
-        .donut-chart { width: 180px; height: 180px; border-radius: 50%; margin: 0 auto 20px auto; position: relative; background: conic-gradient(var(--chart-capital) 0% 60%, var(--chart-interest) 60% 90%, var(--chart-insurance) 90% 100%); }
-        .donut-hole { width: 140px; height: 140px; background: var(--primary-dark); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .main-metric { font-size: 1.8em; font-weight: 800; color: white; line-height: 1; }
-
-        /* MODALS & ALERTS */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px); z-index: 2000; display: none; align-items: center; justify-content: center; }
-        .modal-card { background: white; width: 95%; max-width: 800px; max-height: 90vh; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
-        .modal-header { padding: 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
-        .modal-body { padding: 20px; overflow-y: auto; }
-        .table-responsive { width: 100%; border-collapse: collapse; font-size: 0.9em; }
-        .table-responsive th { text-align: left; padding: 12px; background: #f1f5f9; position: sticky; top: 0; }
-        .table-responsive td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
+        .acquisition-result { background: #e0f2fe; color: var(--primary-dark); padding: 25px; border-radius: 12px; text-align: center; margin-top: 30px; }
+        .acquisition-result strong { font-size: 3em; font-weight: 800; display: block; line-height: 1.1; color: var(--success); }
         
-        .toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary-dark); color: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transform: translateY(100px); transition: transform 0.3s; z-index: 3000; display: flex; align-items: center; gap: 10px; }
-        .toast.show { transform: translateY(0); }
-
-        .dpe-badge { font-size: 4em; font-weight: 800; color: white; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; border-radius: 20px; margin: 0 auto 20px auto; }
-        
-        /* Lexique Styles */
-        .lexique-item { 
-            border-bottom: 1px dashed #e2e8f0; 
-            padding: 15px 0; 
-        }
-        .lexique-item:last-child { border-bottom: none; }
-        .lexique-item h4 { 
-            margin: 0 0 5px 0; 
-            color: var(--primary-blue);
-        }
-        /* Acquisition Styles */
-        .acquisition-result {
-            background: #e0f2fe;
-            color: var(--primary-dark);
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 30px;
-        }
-        .acquisition-result h3 {
-            margin: 0 0 10px 0;
-            font-size: 1.2em;
-            color: var(--primary-blue);
-        }
-        .acquisition-result strong {
-            font-size: 3em;
-            font-weight: 800;
-            display: block;
-            line-height: 1.1;
-            color: var(--success);
-        }
-        .acquisition-result small {
-            font-size: 1em;
-            color: var(--text-muted);
-        }
-        /* Quick Calc */
-        .quick-calc-box {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-        }
-        .quick-calc-box h3 { margin-top: 0; color: var(--primary-dark); }
-        .quick-calc-form { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 20px; 
-            align-items: end; 
-        }
-        .quick-calc-result {
-            text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            background: var(--primary-dark);
-            color: white;
-        }
-        .quick-calc-result strong {
-            font-size: 1.8em;
-            display: block;
-            line-height: 1.1;
-            color: var(--accent-gold);
-        }
-
+        /* CORRECTION CSS RANGE SLIDER */
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; cursor: pointer; margin-top: 10px;}
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; cursor: pointer; background: #cbd5e1; border-radius: 4px; }
+        input[type=range]::-webkit-slider-thumb { height: 22px; width: 22px; border-radius: 50%; background: var(--primary-blue); cursor: pointer; -webkit-appearance: none; margin-top: -7px; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        input[type=range]::-moz-range-track { width: 100%; height: 8px; cursor: pointer; background: #cbd5e1; border-radius: 4px; }
+        input[type=range]::-moz-range-thumb { height: 22px; width: 22px; border-radius: 50%; background: var(--primary-blue); cursor: pointer; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        input[type=range]::-ms-track { width: 100%; height: 8px; cursor: pointer; background: transparent; border-color: transparent; color: transparent; }
 
         /* Mobile */
         @media (max-width: 768px) {
@@ -184,7 +116,7 @@
             .header-inner { flex-direction: column; gap: 15px; }
             .main-nav { width: 100%; justify-content: flex-start; overflow-x: auto; }
             .footer-inner { grid-template-columns: 1fr; text-align: center; }
-            .quick-calc-form { grid-template-columns: 1fr; }
+            #about-page .mission-card { padding: 20px; }
         }
     </style>
 </head>
@@ -203,6 +135,7 @@
                 <a class="nav-link" onclick="navTo('maintenance', this)">Maintenance</a>
                 <a class="nav-link" onclick="navTo('acquisition', this)">Acquisition</a>
                 <a class="nav-link" onclick="navTo('lexique', this)">Lexique</a>
+                <a class="nav-link" onclick="navTo('about', this)">À Propos</a>
             </div>
         </div>
     </nav>
@@ -299,13 +232,14 @@
                         <div style="display:flex; justify-content:space-between; font-size:1.1em; color:var(--accent-gold); margin-top:10px;"><span>À Financer</span><span style="font-weight:800;" id="res_financer">0 €</span></div>
                         <div id="res_capacite_box" style="display:none; background:rgba(255,255,255,0.1); padding:10px; border-radius:8px; margin-top:15px; text-align:center;"><small>Budget Achat Max</small><br><strong style="font-size:1.4em; color:var(--success);" id="res_capacite_achat">0 €</strong></div>
                     </div>
-                    <!-- Bouton d'Affiliation -->
-                    <a id="btn_affiliation_courtier" href="#lien-affilié-courtier" target="_blank" class="btn-primary btn-gold" style="margin-top:20px;">
+                    <!-- Bouton d'Affiliation (Correction de la taille avec la classe btn-affiliation) -->
+                    <a id="btn_affiliation_courtier" href="#lien-affilié-courtier" target="_blank" class="btn-affiliation" style="margin-top:20px;">
                         💰 Comparer les taux avec notre partenaire
                     </a>
                     <button class="btn-primary" style="margin-top:10px;" onclick="openTableModal()"><span>📊</span> Tableau d'Amortissement</button>
-                    <button class="btn-outline" onclick="generatePDF()">📥 Télécharger PDF</button>
                     <button class="btn-secondary" onclick="shareSimulation()">🔗 Copier le lien</button>
+                    <button class="btn-outline" onclick="generatePDF()">📥 Télécharger PDF</button>
+
                     
                     <!-- Avertissement Légal -->
                     <p style="font-size:0.7em; opacity:0.6; margin-top:15px; margin-bottom:0;">
@@ -351,12 +285,11 @@
                                 <option value="reel">Réel (Amortissement)</option>
                             </select>
                         </div>
+                        <!-- Bouton d'Affiliation LMNP (Ajouté) -->
+                        <a id="btn_affiliation_lmnp" href="#lien-affilié-LMNP" target="_blank" class="btn-affiliation" style="margin-top:15px;">
+                            ⚖️ Audit Fiscalité Offert par notre Partenaire
+                        </a>
                     </div>
-                    <!-- Bouton d'Affiliation LMNP (NOUVEAU) -->
-                    <a id="btn_affiliation_lmnp" href="#lien-affilié-LMNP" target="_blank" class="btn-primary btn-gold" style="margin-top:20px;">
-                        💰 Audit Fiscalité Offert par notre Partenaire Comptable
-                    </a>
-
                 </div>
                 <div class="sticky-results">
                     <div style="opacity:0.8;">RENTABILITÉ BRUTE</div>
@@ -527,10 +460,38 @@
             </div>
         </section>
 
+        <!-- PAGE À PROPOS (NOUVEAU) -->
+        <section id="about-page" style="display:none;">
+            <div class="mission-card">
+                <h2>Notre Mission : Démocratiser l'Investissement.</h2>
+                <p>
+                    Horizon Pierre est un outil 100% gratuit, créé par des passionnés, pour aider les futurs propriétaires et investisseurs à prendre des décisions éclairées. Notre objectif est de transformer les calculs complexes (mensualités, rentabilité nette, fiscalité) en données claires et exploitables.
+                </p>
+
+                <div class="pillars">
+                    <div class="pillar-item">
+                        <span style="font-size: 2em; color: var(--success);">✅</span>
+                        <h4>Transparence Totale</h4>
+                        <p>Nous ne sommes pas un courtier ni un cabinet de conseil. Nous sommes un outil. Nos simulations sont objectives et nos sources de revenus (liens d'affiliation) sont clairement identifiées.</p>
+                    </div>
+                    <div class="pillar-item">
+                        <span style="font-size: 2em; color: var(--primary-blue);">💡</span>
+                        <h4>Clarté & Simplicité</h4>
+                        <p>Nous utilisons les formules bancaires standard, mais nous les présentons de la manière la plus simple possible, avec des termes accessibles (voir notre Lexique).</p>
+                    </div>
+                    <div class="pillar-item">
+                        <span style="font-size: 2em; color: var(--accent-gold);">🛡️</span>
+                        <h4>Simulation, pas Conseil</h4>
+                        <p>Les chiffres générés sont des estimations basées sur vos inputs. Ils ne constituent en aucun cas un conseil financier, juridique ou fiscal. Consultez toujours un professionnel.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
     </div>
 
-    <!-- FOOTER (RESTAURÉ) -->
+    <!-- FOOTER (Vérifié) -->
     <footer class="site-footer">
         <div class="footer-inner">
             <div class="footer-col">
@@ -551,6 +512,7 @@
                 <h4>Aide & Légal</h4>
                 <ul>
                     <li onclick="navTo('lexique')">Lexique des termes</li>
+                    <li onclick="navTo('about')">À Propos</li>
                     <li>Mentions Légales</li>
                     <li>Politique de Confidentialité</li>
                 </ul>
@@ -581,24 +543,20 @@
 
     <script>
         // --- CONFIGURATION D'AFFILIATION (MODIFIER ICI) ---
-        // Lorsque vous aurez votre lien d'affilié de courtier, remplacez le #lien-affilié-courtier par votre URL complète
+        // 1. LIEN D'AFFILIATION UNIQUE vers votre courtier/banque partenaire.
         const AFFILIATION_COURTIER_URL = "https://votre-courtier-partenaire.com/comparer-taux?aff=HorizonPierre";
         
-        // NOUVELLE VARIABLE: Lien vers le partenaire comptable LMNP
-        const AFFILIATION_LMNP_URL = "https://votre-expert-comptable.com/audit-lmnp?aff=HorizonPierre";
+        // 2. LIEN D'AFFILIATION UNIQUE vers votre partenaire comptable LMNP.
+        const AFFILIATION_LMNP_URL = "https://votre-partenaire-comptable.com/audit-lmnp?aff=HorizonPierre";
 
-        // Mise à jour de l'URL des boutons au chargement ou lors de la navigation
+
+        // Mise à jour de l'URL du bouton au chargement ou lors de la navigation
         document.addEventListener('DOMContentLoaded', () => {
-            // Affiliation Courtier Crédit
             const btnCourtier = document.getElementById('btn_affiliation_courtier');
-            if (btnCourtier) {
-                btnCourtier.href = AFFILIATION_COURTIER_URL;
-            }
-            // Affiliation Expert Comptable LMNP
-            const btnLmnp = document.getElementById('btn_affiliation_lmnp');
-            if (btnLmnp) {
-                btnLmnp.href = AFFILIATION_LMNP_URL;
-            }
+            const btnLMNP = document.getElementById('btn_affiliation_lmnp');
+
+            if (btnCourtier) btnCourtier.href = AFFILIATION_COURTIER_URL;
+            if (btnLMNP) btnLMNP.href = AFFILIATION_LMNP_URL;
         });
 
         // --- QUICK CALC FUNCTION ---
@@ -611,10 +569,7 @@
             const t_notaire = 0.075; 
             const agence = 0; // Pas de frais d'agence dans le Quick Calc pour simplifier
 
-            // Calcul Frais de notaire
             const notaire = prix * t_notaire;
-            
-            // Montant à emprunter (K)
             const besoin = prix + notaire + agence;
             const K = Math.max(0, besoin - apport);
             
@@ -629,24 +584,22 @@
             }
             
             const m_tot = m_pret + m_ass;
-
             document.getElementById('quick_mensualite').innerText = formatMoney(m_tot) + " €";
         }
 
         // --- CORE NAVIGATION ---
         function navTo(page, el) {
             document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-            // Mettre à jour l'ID de la page (dpe -> energie)
             const targetId = page === 'dpe' ? 'energie' : page;
             document.getElementById(targetId + '-page').style.display = 'block';
             
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            if(el) document.querySelector(`.main-nav a[onclick="navTo('${page}', this)"]`).classList.add('active'); // Mettre à jour l'onglet actif
+            if(el) document.querySelector(`.main-nav a[onclick="navTo('${page}', this)"]`).classList.add('active');
             window.scrollTo(0,0);
             updateURL(page);
             
-            // Lancer les calculs initiaux pour les nouvelles pages
-            if(targetId === 'home') quickCalculate(); // Nouveau
+            // Lancer les calculs initiaux pour les pages
+            if(targetId === 'home') quickCalculate();
             if(targetId === 'energie') calcDPE();
             if(targetId === 'maintenance') calcMaintenance();
             if(targetId === 'patrimoine') calcYield();
@@ -737,7 +690,6 @@
             const gestionRate = parseFloat(document.getElementById('y_gestion_rate').value) / 100 || 0;
 
             let an_rent = l * 12;
-            
             let gestionAnnuelle = an_rent * gestionRate;
             let gestionMensuelle = gestionAnnuelle / 12;
 
@@ -825,7 +777,7 @@
             if (cashflow <= 0) {
                 acqYearsEl.innerText = '∞';
                 acqMonthsEl.innerText = "Cashflow Négatif (Impossible)";
-                acqYearsEl.parentElement.style.backgroundColor = '#fecaca'; // Red background
+                acqYearsEl.parentElement.style.backgroundColor = '#fecaca';
                 acqYearsEl.parentElement.style.color = 'var(--danger)';
                 acqYearsEl.style.color = 'var(--danger)';
                 return;
