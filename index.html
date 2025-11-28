@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
-        /* --- DESIGN SYSTEM (v43 - Stable) --- */
+        /* --- DESIGN SYSTEM (v44 - Stable) --- */
         :root {
             --primary-dark: #0f172a;
             --primary-blue: #3b82f6;
@@ -99,7 +99,7 @@
             width: 100%; 
             margin-top: 10px; 
             font-family: 'Inter', sans-serif;
-            display: flex; /* Ajout Flex pour centrage parfait icone/texte */
+            display: flex; 
             align-items: center;
             justify-content: center;
             gap: 8px;
@@ -125,33 +125,29 @@
         }
         .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: white; }
 
-        /* CORRECTION BOUTON AFFILIATION (ORANGE) */
-        /* Alignement strict sur .btn-primary */
+        /* BOUTON AFFILIATION (ORANGE) */
         .btn-affiliation { 
             background: var(--accent-gold); 
             color: var(--primary-dark); 
             border: none; 
-            padding: 15px 30px; /* Identique btn-primary */
-            border-radius: 10px; /* Identique btn-primary */
-            font-weight: 700; /* Identique btn-primary */
+            padding: 15px 30px; 
+            border-radius: 10px; 
+            font-weight: 700; 
             cursor: pointer; 
             width: 100%; 
             max-width: 100%; 
-            
-            /* FLEXBOX POUR ALIGNEMENT PARFAIT */
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            gap: 8px; /* Identique btn-primary */
-            
+            gap: 8px; 
             text-decoration: none;
             transition: all 0.2s;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
             white-space: normal;
             font-family: 'Inter', sans-serif;
-            margin-top: 20px; /* Espace clair avant le CTA principal */
-            margin-bottom: 5px; /* Petit espace avant le bouton suivant */
-            box-sizing: border-box; /* Assure que le padding ne casse pas la largeur */
+            margin-top: 20px; 
+            margin-bottom: 5px; 
+            box-sizing: border-box;
         }
         .btn-affiliation:hover {
             background: var(--accent-gold-hover);
@@ -176,7 +172,6 @@
         /* Correction Mobile */
         @media (max-width: 450px) {
              .sticky-results { padding: 20px; }
-             /* Harmonisation de la taille des boutons sur mobile */
              .sticky-results .btn-primary, 
              .sticky-results .btn-secondary, 
              .sticky-results .btn-outline,
@@ -217,7 +212,6 @@
 
 
         .form-group { margin-bottom: 20px; }
-        /* Force Inter font on inputs */
         .form-control { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         .acquisition-result { background: #e0f2fe; color: var(--primary-dark); padding: 25px; border-radius: 12px; text-align: center; margin-top: 30px; }
         .acquisition-result strong { font-size: 3em; font-weight: 800; display: block; line-height: 1.1; color: var(--success); }
@@ -373,7 +367,6 @@
                         <div id="res_capacite_box" style="display:none; background:rgba(255,255,255,0.1); padding:10px; border-radius:8px; margin-top:15px; text-align:center;"><small>Budget Achat Max</small><br><strong style="font-size:1.4em; color:var(--success);" id="res_capacite_achat">0 €</strong></div>
                     </div>
                     
-                    <!-- Bouton Affiliation Crédit (CORRIGÉ & ALIGNÉ) -->
                     <a id="btn_affiliation_courtier" href="#lien-affilié-courtier" target="_blank" class="btn-affiliation">
                         <span style="font-size: 1.2em;">💰</span> Comparez les taux
                     </a>
@@ -422,7 +415,6 @@
                             </select>
                         </div>
                         
-                        <!-- Bouton Affiliation LMNP (CORRIGÉ & ALIGNÉ) -->
                         <a id="btn_affiliation_lmnp" href="#lien-affilié-LMNP" target="_blank" class="btn-affiliation">
                             <span style="font-size: 1.2em;">⚖️</span> Audit Fiscalité Offert
                         </a>
@@ -510,7 +502,7 @@
             </div>
         </section>
 
-        <!-- LEXIQUE (CONTENU COMPLET RESTAURÉ) -->
+        <!-- LEXIQUE -->
         <section id="lexique-page" style="display:none;">
             <h2 style="color:var(--primary-dark); margin-bottom: 20px;">Lexique des Termes Techniques</h2>
             <div class="glass-panel">
@@ -537,7 +529,7 @@
             </div>
         </section>
 
-        <!-- A PROPOS (CONTENU COMPLET RESTAURÉ) -->
+        <!-- A PROPOS -->
         <section id="about-page" style="display:none;">
             <div class="mission-card">
                 <h2>Notre Mission : Démocratiser l'Investissement.</h2>
@@ -566,7 +558,7 @@
         </section>
     </div>
 
-    <!-- FOOTER (CONTENU COMPLET RESTAURÉ) -->
+    <!-- FOOTER -->
     <footer class="site-footer">
         <div class="footer-inner">
             <div class="footer-col">
@@ -610,7 +602,7 @@
     <script src="https://www.chatbase.co/embed.min.js" defer></script>
 
     <script>
-        // --- LOGIQUE JS (Idem v40) ---
+        // --- LOGIQUE JS ---
         const AFFILIATION_COURTIER_URL = "https://votre-courtier-partenaire.com/comparer-taux?aff=HorizonPierre";
         const AFFILIATION_LMNP_URL = "https://votre-partenaire-comptable.com/audit-lmnp?aff=HorizonPierre";
 
@@ -694,7 +686,7 @@
             if(endettement <= 35) { badge.style.background = "rgba(16,185,129,0.2)"; badge.style.color="#34d399"; }
             else { badge.style.background = "rgba(239,68,68,0.2)"; badge.style.color="#f87171"; }
             document.getElementById('chart-bg').style.background = `conic-gradient(var(--chart-capital) 0% 60%, var(--chart-interest) 60% 90%, var(--chart-insurance) 90% 100%)`;
-            window.lastCalc = { K, taux, duree, m_pret, m_tot, m_ass, notaire, cout_credit, prix, agence, apport };
+            window.lastCalc = { K, taux, duree, m_pret, m_tot, m_ass, notaire, cout_credit, prix, agence, apport, mode };
         }
 
         function calcYield() {
@@ -762,8 +754,7 @@
             } else { navTo('home', document.querySelectorAll('.nav-link')[0]); }
         }
 
-        // --- FONCTIONS RESTAURÉES (VRAI PDF ET VRAI TABLEAU) ---
-
+        // --- PDF AMÉLIORÉ AVEC DÉTAIL ASSURANCE & TITRE ADAPTATIF ---
         async function generatePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
@@ -774,8 +765,12 @@
             doc.setFillColor(15, 23, 42); doc.rect(0, 0, 210, 35, 'F');
             doc.setFont("helvetica", "bold"); doc.setFontSize(20); doc.setTextColor(255, 255, 255);
             doc.text("HORIZON PIERRE", 15, 18);
+            
+            // TITRE DYNAMIQUE SELON LE MODE
             doc.setFontSize(10); doc.setFont("helvetica", "normal");
-            doc.text("Étude de Financement Immobilier", 15, 26);
+            const docTitle = data.mode === 'capacite' ? "Attestation de Capacité d'Emprunt" : "Étude de Financement Immobilier";
+            doc.text(docTitle, 15, 26);
+            
             doc.text(`Le ${new Date().toLocaleDateString()}`, 170, 18);
 
             let y = 50;
@@ -807,15 +802,25 @@
             doc.setFont("helvetica", "bold"); doc.setTextColor(15, 23, 42);
             doc.text("MONTANT À EMPRUNTER :", 20, y+8); doc.text(`${formatMoney(data.K)} €`, 160, y+8, {align:'right'}); y+=25;
 
-            // SECTION 3: EMPRUNT
+            // SECTION 3: EMPRUNT (DÉTAILLÉ)
             doc.setTextColor(0);
             doc.setFontSize(14); doc.text("3. Conditions de l'Emprunt", 15, y);
             doc.line(15, y+2, 195, y+2); y += 12;
 
             doc.setFontSize(11); doc.setFont("helvetica", "normal");
-            doc.text(`Mensualité (Assurance Incluse) : ${formatMoney(data.m_tot)} € / mois`, 20, y); y+=8;
+            
+            // Détail Mensualité
+            doc.text(`Mensualité Crédit (Hors Assurance) :`, 20, y); doc.text(`${formatMoney(data.m_pret)} €`, 160, y, {align:'right'}); y+=7;
+            doc.text(`Assurance Emprunteur (Estimée 0.34%) :`, 20, y); doc.text(`${formatMoney(data.m_ass)} €`, 160, y, {align:'right'}); y+=8;
+            
+            // Total Mensuel en gras
+            doc.setFont("helvetica", "bold");
+            doc.text(`MENSUALITÉ TOTALE :`, 20, y); doc.text(`${formatMoney(data.m_tot)} € / mois`, 160, y, {align:'right'}); y+=12;
+            
+            // Détails techniques
+            doc.setFont("helvetica", "normal");
             doc.text(`Taux Nominal : ${document.getElementById('taux').value} %  |  Durée : ${data.duree} ans`, 20, y); y+=8;
-            doc.text(`Coût total des intérêts + assurance : ${formatMoney(data.cout_credit)} €`, 20, y); y+=20;
+            doc.text(`Coût total du crédit (Intérêts + Assurance) : ${formatMoney(data.cout_credit)} €`, 20, y); y+=20;
 
             // SECTION 4: TABLEAU COMPLET
             doc.setFontSize(14); doc.setFont("helvetica", "bold");
