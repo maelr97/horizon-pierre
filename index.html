@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
-        /* --- DESIGN SYSTEM (v35) --- */
+        /* --- DESIGN SYSTEM (v37) --- */
         :root {
             --primary-dark: #0f172a;
             --primary-blue: #3b82f6;
@@ -81,11 +81,13 @@
             font-weight: 700; 
             cursor: pointer; 
             width: 100%; 
-            display: block; /* Important pour éviter le débordement sur mobile */
+            max-width: 100%; /* SÉCURITÉ CONTRE LE DÉBORDEMENT */
+            display: block; 
             text-align: center;
             text-decoration: none;
             transition: all 0.2s;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            white-space: normal; /* Permet au texte de passer à la ligne */
         }
         .btn-affiliation:hover {
             background: #d97706; /* Ton plus foncé */
@@ -94,7 +96,27 @@
         /* CALCULATOR */
         .calc-wrapper { display: grid; grid-template-columns: 1fr 380px; gap: 30px; align-items: start; }
         .input-section { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .sticky-results { position: sticky; top: 100px; background: var(--primary-dark); color: white; border-radius: 16px; padding: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); text-align: center; }
+        .sticky-results { 
+            position: sticky; 
+            top: 100px; 
+            background: var(--primary-dark); 
+            color: white; 
+            border-radius: 16px; 
+            padding: 30px; 
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); 
+            text-align: center;
+            overflow: hidden; 
+            box-sizing: border-box; 
+        }
+        /* Ajustement de la largeur des boutons dans sticky-results pour les petits écrans */
+        @media (max-width: 450px) {
+             .sticky-results .btn-primary, .sticky-results .btn-secondary, .sticky-results .btn-outline {
+                 /* Réduction du padding pour faire de la place aux boutons affiliation */
+                 padding: 10px; 
+                 font-size: 0.9em;
+             }
+        }
+        
 
         .form-group { margin-bottom: 20px; }
         .form-control { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em; box-sizing: border-box; }
@@ -109,6 +131,28 @@
         input[type=range]::-moz-range-thumb { height: 22px; width: 22px; border-radius: 50%; background: var(--primary-blue); cursor: pointer; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         input[type=range]::-ms-track { width: 100%; height: 8px; cursor: pointer; background: transparent; border-color: transparent; color: transparent; }
 
+        /* MODAL CORRECTION */
+        .modal-overlay { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: rgba(15, 23, 42, 0.8); 
+            backdrop-filter: blur(5px); 
+            z-index: 2000; 
+            display: none !important; /* CORRECTION MAJEURE: Masqué par défaut */
+            align-items: center; 
+            justify-content: center; 
+        }
+        .modal-overlay.show {
+            display: flex !important; /* Affiché uniquement par JavaScript */
+        }
+        .modal-card { background: white; width: 95%; max-width: 800px; max-height: 90vh; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
+        .modal-header { padding: 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
+        .modal-body { padding: 20px; overflow-y: auto; }
+        .table-responsive { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+        .table-responsive th { text-align: left; padding: 12px; background: #f1f5f9; position: sticky; top: 0; }
+        .table-responsive td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
+        
         /* Mobile */
         @media (max-width: 768px) {
             .calc-wrapper { grid-template-columns: 1fr; }
@@ -145,8 +189,9 @@
         <!-- ACCUEIL -->
         <section id="home-page">
             <div style="text-align: center; padding: 60px 20px;">
-                <h1 style="font-size: 3em; color: var(--primary-dark); margin-bottom: 10px; line-height: 1.1;">L'Intelligence Artificielle<br>de votre Patrimoine.</h1>
-                <p style="font-size: 1.2em; color: var(--text-muted); margin-bottom: 40px;">Outil 100% gratuit pour simuler vos projets immobiliers.</p>
+                <!-- Titre H1 SEO Optimisé -->
+                <h1 style="font-size: 3em; color: var(--primary-dark); margin-bottom: 10px; line-height: 1.1;">Simulateur de Crédit Immobilier <br>et Outil d'Investissement Gratuit</h1>
+                <p style="font-size: 1.2em; color: var(--text-muted); margin-bottom: 40px;">Calculez vos mensualités, estimez la rentabilité après impôts (LMNP), et sécurisez votre projet.</p>
                 <!-- CALCULATEUR RAPIDE (QUICK CALC) -->
                 <div class="quick-calc-box">
                     <h3>Simulateur de Mensualité Express</h3>
@@ -491,7 +536,7 @@
 
     </div>
 
-    <!-- FOOTER (Vérifié) -->
+    <!-- FOOTER (Vérifié et corrigé) -->
     <footer class="site-footer">
         <div class="footer-inner">
             <div class="footer-col">
@@ -520,7 +565,7 @@
         </div>
     </footer>
 
-    <!-- MODAL TABLE -->
+    <!-- MODAL TABLE (Déplacé ici pour ne pas impacter le footer) -->
     <div id="table-modal" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-header"><h3>Tableau d'Amortissement</h3><button class="close-modal" onclick="closeTableModal()">×</button></div>
@@ -528,7 +573,7 @@
         </div>
     </div>
 
-    <!-- TOAST NOTIFICATION -->
+    <!-- TOAST NOTIFICATION (Déplacé ici) -->
     <div id="toast" class="toast">✅ Lien copié dans le presse-papier !</div>
 
     <!-- CHATBASE EMBED (INTEGRATION FINALE) -->
@@ -557,6 +602,10 @@
 
             if (btnCourtier) btnCourtier.href = AFFILIATION_COURTIER_URL;
             if (btnLMNP) btnLMNP.href = AFFILIATION_LMNP_URL;
+            
+            // Lancer les calculs initiaux (appelé ici ou dans loadFromURL)
+            loadFromURL();
+            quickCalculate();
         });
 
         // --- QUICK CALC FUNCTION ---
@@ -594,7 +643,8 @@
             document.getElementById(targetId + '-page').style.display = 'block';
             
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            if(el) document.querySelector(`.main-nav a[onclick="navTo('${page}', this)"]`).classList.add('active');
+            // Définir la classe active correctement sur le lien cliqué
+            if(el) el.classList.add('active');
             window.scrollTo(0,0);
             updateURL(page);
             
@@ -919,8 +969,13 @@
             doc.save("Etude_HorizonPierre_Complete.pdf");
         }
 
-        function openTableModal() { document.getElementById('table-modal').style.display = 'flex'; generateTable(); }
-        function closeTableModal() { document.getElementById('table-modal').style.display = 'none'; }
+        function openTableModal() { 
+            document.getElementById('table-modal').classList.add('show'); /* Utilisation de la classe show */
+            generateTable(); 
+        }
+        function closeTableModal() { 
+            document.getElementById('table-modal').classList.remove('show'); /* Retrait de la classe show */
+        }
         function generateTable() {
             let { K, taux, duree, m_pret } = window.lastCalc || {}; if(!K) return;
             let html = ''; let solde = K; let tm = taux / 12;
@@ -933,7 +988,8 @@
         }
 
         // Init: Load data from URL if present, otherwise start on home
-        loadFromURL();
+        // Rendu inutile par le doc.addEventListener('DOMContentLoaded')
+        // loadFromURL(); 
     </script>
 </body>
 </html>
