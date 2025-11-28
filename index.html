@@ -7,29 +7,31 @@
     <!-- --- SEO & META DATA (POUR GOOGLE) --- -->
     <title>Simulateur Immobilier Gratuit | Crédit, Rentabilité & DPE | Horizon Pierre</title>
     <meta name="description" content="Simulateur immobilier gratuit : calculez votre mensualité de crédit, votre capacité d'emprunt, la rentabilité LMNP et estimez votre DPE. Outil 100% en ligne sans inscription.">
-    <meta name="keywords" content="simulateur crédit immobilier, calcul mensualité, rentabilité locative, LMNP, DPE gratuit, tableau amortissement, capacité emprunt">
+    <meta name="keywords" content="simulateur crédit immobilier, calcul mensualité, rentabilité locative, LMNP, capacité emprunt, assurance prêt, frais notaire, tableau amortissement">
     <meta name="robots" content="index, follow">
     <meta name="author" content="Horizon Pierre">
     <meta property="og:title" content="Simulateur Immobilier Gratuit - Horizon Pierre">
     <meta property="og:description" content="Calculez votre projet immo en 2 minutes : Crédit, Rentabilité, DPE.">
     <meta property="og:type" content="website">
 
+    <!-- BALISE DE VÉRIFICATION GOOGLE SEARCH CONSOLE -->
+    <meta name="google-site-verification" content="e2J1qqD_xBYrkd-32M4Tb2Qxl--i6IiYBM_4AvhS0ME" />
+
     <!-- --- GOOGLE ANALYTICS (Décommentez et mettez votre ID pour suivre le trafic) --- -->
-    <!--
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1234567890"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');
+      gtag('config', 'G-1234567890'); /* REMPLACER PAR VOTRE VRAI ID G-XXXXX */
     </script>
-    -->
+    
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
-        /* --- DESIGN SYSTEM (Identique v46/v47) --- */
+        /* --- DESIGN SYSTEM (Identique v51) --- */
         :root {
             --primary-dark: #0f172a;
             --primary-blue: #3b82f6;
@@ -239,6 +241,7 @@
         input[type=range]::-webkit-slider-thumb { height: 22px; width: 22px; border-radius: 50%; background: var(--primary-blue); cursor: pointer; -webkit-appearance: none; margin-top: -7px; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         input[type=range]::-moz-range-track { width: 100%; height: 8px; cursor: pointer; background: #cbd5e1; border-radius: 4px; }
         input[type=range]::-moz-range-thumb { height: 22px; width: 22px; border-radius: 50%; background: var(--primary-blue); cursor: pointer; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        input[type=range]::-ms-track { width: 100%; height: 8px; cursor: pointer; background: transparent; border-color: transparent; color: transparent; }
 
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -373,7 +376,6 @@
                         <div class="form-group"><label>Durée : <span id="duree_val">20</span> ans</label><input type="range" id="duree" min="7" max="30" value="20" oninput="updateVal('duree_val', this.value, ''); calculate()"></div>
                         <div class="form-group"><label>Taux Crédit : <span id="taux_val" style="color:var(--primary-blue);">3.20 %</span></label><input type="range" id="taux" min="1.0" max="5.5" step="0.05" value="3.20" oninput="document.getElementById('taux_val').innerText = parseFloat(this.value).toFixed(2) + ' %'; calculate()"></div>
                         
-                        <!-- NOUVEAU CURSEUR ASSURANCE -->
                         <div class="form-group"><label>Taux Assurance : <span id="ass_val" style="color:var(--text-muted);">0.34 %</span></label><input type="range" id="taux_assurance" min="0.10" max="1.00" step="0.01" value="0.34" oninput="document.getElementById('ass_val').innerText = parseFloat(this.value).toFixed(2) + ' %'; calculate()"></div>
                     </form>
                 </div>
@@ -389,6 +391,11 @@
                     
                     <a id="btn_affiliation_courtier" href="#lien-affilié-courtier" target="_blank" class="btn-affiliation">
                         <span style="font-size: 1.2em;">💰</span> Comparez les taux
+                    </a>
+                    
+                    <!-- NOUVEAU BOUTON AFFILIATION ASSURANCE -->
+                    <a id="btn_affiliation_assurance" href="#lien-affilié-assurance" target="_blank" class="btn-affiliation">
+                        <span style="font-size: 1.2em;">🛡️</span> Comparez les Assurances
                     </a>
                     
                     <button class="btn-primary" onclick="openTableModal()"><span>📊</span> Tableau d'Amortissement</button>
@@ -620,14 +627,20 @@
     <script src="https://www.chatbase.co/embed.min.js" defer></script>
 
     <script>
+        // --- CONFIGURATION D'AFFILIATION (MODIFIER ICI) ---
         const AFFILIATION_COURTIER_URL = "https://votre-courtier-partenaire.com/comparer-taux?aff=HorizonPierre";
         const AFFILIATION_LMNP_URL = "https://votre-partenaire-comptable.com/audit-lmnp?aff=HorizonPierre";
+        const AFFILIATION_ASSURANCE_URL = "https://votre-assureur-partenaire.com/comparer-assurance?aff=HorizonPierre"; // NOUVELLE VARIABLE
 
         document.addEventListener('DOMContentLoaded', () => {
             const btnCourtier = document.getElementById('btn_affiliation_courtier');
             const btnLMNP = document.getElementById('btn_affiliation_lmnp');
+            const btnAssurance = document.getElementById('btn_affiliation_assurance'); // NOUVEL ÉLÉMENT
+
             if (btnCourtier) btnCourtier.href = AFFILIATION_COURTIER_URL;
             if (btnLMNP) btnLMNP.href = AFFILIATION_LMNP_URL;
+            if (btnAssurance) btnAssurance.href = AFFILIATION_ASSURANCE_URL; // LIER LA NOUVELLE VARIABLE
+
             loadFromURL(); quickCalculate();
         });
 
@@ -788,7 +801,7 @@
             doc.setFillColor(15, 23, 42); doc.rect(0, 0, 210, 35, 'F');
             doc.setFont("helvetica", "bold"); doc.setFontSize(20); doc.setTextColor(255); doc.text("HORIZON PIERRE", 15, 18);
             doc.setFontSize(10); doc.setFont("helvetica", "normal");
-            doc.text(data.mode === 'capacite' ? "Attestation de Capacité" : "Étude de Financement", 15, 26);
+            doc.text(data.mode === 'capacite' ? "Attestation de Capacité d'Emprunt" : "Étude de Financement Immobilier", 15, 26);
             doc.text(`Le ${new Date().toLocaleDateString()}`, 170, 18);
 
             let y = 50;
@@ -796,9 +809,9 @@
             // SECTION 1
             doc.setTextColor(0); doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text("1. Coût Total", 15, y); doc.line(15, y+2, 195, y+2); y+=10;
             doc.setFontSize(11); doc.setFont("helvetica", "normal");
-            doc.text("Prix Net Vendeur :", 20, y); doc.text(`${formatMoney(data.prix)} €`, 160, y, {align:'right'}); y+=8;
-            doc.text("Frais d'Agence :", 20, y); doc.text(`${formatMoney(data.agence)} €`, 160, y, {align:'right'}); y+=8;
-            doc.text("Frais de Notaire (Estimés à 7.5%) :", 20, y); doc.text(`${formatMoney(data.notaire)} €`, 160, y, {align:'right'}); y+=10;
+            doc.text("Prix Net Vendeur :", 20, y); doc.text(`${formatMoney(data.prix)} €`, 160, y, {align:'right'}); y+=7;
+            doc.text("Frais d'Agence :", 20, y); doc.text(`${formatMoney(data.agence)} €`, 160, y, {align:'right'}); y+=7;
+            doc.text("Frais de Notaire (Estimés à 7.5%) :", 20, y); doc.text(`${formatMoney(data.notaire)} €`, 160, y, {align:'right'}); y+=8;
             doc.setFont("helvetica", "bold"); doc.text("TOTAL DU PROJET :", 20, y); doc.text(`${formatMoney(parseFloat(data.prix)+parseFloat(data.agence)+parseFloat(data.notaire))} €`, 160, y, {align:'right'}); y+=20;
 
             // SECTION 2
@@ -841,7 +854,6 @@
             
             for(let an=1; an<=duree; an++) {
                 let int_an = 0; let cap_an = 0;
-                // Calcul pour une année complète
                 for(let m=0; m<12; m++) { 
                     let int = solde * tm; 
                     let cap = m_pret - int; 
@@ -850,8 +862,6 @@
                     solde -= cap; 
                     if(solde < 0) solde = 0; 
                 }
-                
-                // Génération de la ligne HTML proprement formatée
                 html += `
                     <tr>
                         <td>Année ${an}</td>
