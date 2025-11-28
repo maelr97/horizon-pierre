@@ -8,11 +8,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
-        /* --- DESIGN SYSTEM (v39) --- */
+        /* --- DESIGN SYSTEM (v42 - Restauré) --- */
         :root {
             --primary-dark: #0f172a;
             --primary-blue: #3b82f6;
             --accent-gold: #f59e0b;
+            --accent-gold-hover: #d97706;
             --bg-body: #f8fafc;
             --text-main: #334155;
             --text-muted: #64748b;
@@ -68,29 +69,92 @@
         .nav-link.active { background-color: var(--primary-dark); color: white; }
 
         /* UI ELEMENTS */
-        .btn-primary { background: var(--primary-blue); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
-        .btn-primary:hover { background: #2563eb; }
-        .btn-secondary { background: #e0f2fe; color: var(--primary-blue); border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 10px; }
-        .btn-secondary:hover { background: #bae6fd; }
-        .btn-affiliation { /* Style pour les boutons d'affiliation Or/Noir */
-            background: var(--accent-gold); 
-            color: var(--primary-dark); 
+        .btn-primary { 
+            background: var(--primary-blue); 
+            color: white; 
             border: none; 
-            padding: 12px 20px; 
-            border-radius: 8px; 
+            padding: 15px 30px; 
+            border-radius: 10px; 
             font-weight: 700; 
             cursor: pointer; 
             width: 100%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            transition: 0.2s; 
+            font-family: 'Inter', sans-serif;
+            margin-top: 10px;
+        }
+        .btn-primary:hover { background: #2563eb; }
+        
+        .btn-secondary { 
+            background: #e0f2fe; 
+            color: var(--primary-blue); 
+            border: none; 
+            padding: 12px; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            width: 100%; 
+            margin-top: 10px; 
+            font-family: 'Inter', sans-serif;
+            display: flex; /* Ajout Flex pour centrage parfait icone/texte */
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-secondary:hover { background: #bae6fd; }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+        .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: white; }
+
+        /* CORRECTION BOUTON AFFILIATION (ORANGE) */
+        /* Alignement strict sur .btn-primary */
+        .btn-affiliation { 
+            background: var(--accent-gold); 
+            color: var(--primary-dark); 
+            border: none; 
+            padding: 15px 30px; /* Identique btn-primary */
+            border-radius: 10px; /* Identique btn-primary */
+            font-weight: 700; /* Identique btn-primary */
+            cursor: pointer; 
+            width: 100%; 
             max-width: 100%; 
-            display: block; 
-            text-align: center;
+            
+            /* FLEXBOX POUR ALIGNEMENT PARFAIT */
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; /* Identique btn-primary */
+            
             text-decoration: none;
             transition: all 0.2s;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
             white-space: normal;
+            font-family: 'Inter', sans-serif;
+            margin-top: 20px; /* Espace clair avant le CTA principal */
+            margin-bottom: 5px; /* Petit espace avant le bouton suivant */
+            box-sizing: border-box; /* Assure que le padding ne casse pas la largeur */
         }
         .btn-affiliation:hover {
-            background: #d97706; /* Ton plus foncé */
+            background: var(--accent-gold-hover);
         }
 
         /* CALCULATOR */
@@ -108,26 +172,57 @@
             overflow: hidden; 
             box-sizing: border-box; 
         }
-        /* Ajustement de la largeur des boutons dans sticky-results pour les petits écrans (CORRECTION) */
+        
+        /* Correction Mobile */
         @media (max-width: 450px) {
-             .sticky-results .btn-primary, .sticky-results .btn-secondary, .sticky-results .btn-outline {
-                 padding: 8px 10px;
-                 font-size: 0.85em;
-                 margin-top: 8px;
-             }
+             .sticky-results { padding: 20px; }
+             /* Harmonisation de la taille des boutons sur mobile */
+             .sticky-results .btn-primary, 
+             .sticky-results .btn-secondary, 
+             .sticky-results .btn-outline,
              .sticky-results .btn-affiliation {
-                 /* Assure que le bouton prend bien toute la place disponible sans forcer les autres à déborder */
-                 font-size: 0.9em;
+                 padding: 12px 15px;
+                 font-size: 0.95em;
+                 margin-top: 10px;
+                 width: 100%;
              }
         }
         
+        /* Quick Calc Box */
+        .quick-calc-box {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: left;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .quick-calc-form {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            align-items: end;
+        }
+        .quick-calc-result {
+            background: var(--primary-blue);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .quick-calc-result strong { font-size: 1.4em; display: block; }
+        @media (max-width: 600px) { .quick-calc-form { grid-template-columns: 1fr; } }
+
 
         .form-group { margin-bottom: 20px; }
-        .form-control { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em; box-sizing: border-box; }
+        /* Force Inter font on inputs */
+        .form-control { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         .acquisition-result { background: #e0f2fe; color: var(--primary-dark); padding: 25px; border-radius: 12px; text-align: center; margin-top: 30px; }
         .acquisition-result strong { font-size: 3em; font-weight: 800; display: block; line-height: 1.1; color: var(--success); }
         
-        /* CORRECTION CSS RANGE SLIDER */
+        /* RANGE SLIDER */
         input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; cursor: pointer; margin-top: 10px;}
         input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; cursor: pointer; background: #cbd5e1; border-radius: 4px; }
         input[type=range]::-webkit-slider-thumb { height: 22px; width: 22px; border-radius: 50%; background: var(--primary-blue); cursor: pointer; -webkit-appearance: none; margin-top: -7px; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
@@ -135,21 +230,13 @@
         input[type=range]::-moz-range-thumb { height: 22px; width: 22px; border-radius: 50%; background: var(--primary-blue); cursor: pointer; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         input[type=range]::-ms-track { width: 100%; height: 8px; cursor: pointer; background: transparent; border-color: transparent; color: transparent; }
 
-        /* MODAL CORRECTION */
+        /* MODAL */
         .modal-overlay { 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            background: rgba(15, 23, 42, 0.8); 
-            backdrop-filter: blur(5px); 
-            z-index: 2000; 
-            display: none !important; /* CORRECTION MAJEURE: Masqué par défaut */
-            align-items: center; 
-            justify-content: center; 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px); 
+            z-index: 2000; display: none !important; align-items: center; justify-content: center; 
         }
-        .modal-overlay.show {
-            display: flex !important; /* Affiché uniquement par JavaScript */
-        }
+        .modal-overlay.show { display: flex !important; }
         .modal-card { background: white; width: 95%; max-width: 800px; max-height: 90vh; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
         .modal-header { padding: 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
         .modal-body { padding: 20px; overflow-y: auto; }
@@ -157,30 +244,14 @@
         .table-responsive th { text-align: left; padding: 12px; background: #f1f5f9; position: sticky; top: 0; }
         .table-responsive td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
         
-        /* TOAST NOTIFICATION CORRECTION */
+        /* TOAST */
         .toast {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: var(--primary-dark);
-            color: #fff;
-            text-align: center;
-            border-radius: 8px;
-            padding: 16px;
-            position: fixed;
-            z-index: 3000; /* Plus haut que le modal */
-            left: 50%;
-            bottom: 30px;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: visibility 0s, opacity 0.5s;
+            visibility: hidden; min-width: 250px; background-color: var(--primary-dark); color: #fff;
+            text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 3000;
+            left: 50%; bottom: 30px; transform: translateX(-50%); opacity: 0; transition: visibility 0s, opacity 0.5s;
         }
-        .toast.show {
-            visibility: visible;
-            opacity: 1;
-        }
+        .toast.show { visibility: visible; opacity: 1; }
 
-
-        /* Mobile */
         @media (max-width: 768px) {
             .calc-wrapper { grid-template-columns: 1fr; }
             .sticky-results { position: relative; top: 0; margin-top: 20px; }
@@ -216,10 +287,9 @@
         <!-- ACCUEIL -->
         <section id="home-page">
             <div style="text-align: center; padding: 60px 20px;">
-                <!-- Titre H1 SEO Optimisé -->
                 <h1 style="font-size: 3em; color: var(--primary-dark); margin-bottom: 10px; line-height: 1.1;">Simulateur de Crédit Immobilier <br>et Outil d'Investissement Gratuit</h1>
                 <p style="font-size: 1.2em; color: var(--text-muted); margin-bottom: 40px;">Calculez vos mensualités, estimez la rentabilité après impôts (LMNP), et sécurisez votre projet.</p>
-                <!-- CALCULATEUR RAPIDE (QUICK CALC) -->
+                
                 <div class="quick-calc-box">
                     <h3>Simulateur de Mensualité Express</h3>
                     <div class="quick-calc-form">
@@ -241,9 +311,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- FIN QUICK CALC -->
 
-                <button class="btn-primary" style="width: fit-content; margin: 0 auto 30px auto;" onclick="navTo('calculator', document.querySelectorAll('.nav-link')[1])">Démarrer l'étude complète →</button>
+                <button class="btn-primary" style="width: fit-content; margin: 30px auto 30px auto;" onclick="navTo('calculator', document.querySelectorAll('.nav-link')[1])">Démarrer l'étude complète →</button>
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
@@ -275,7 +344,6 @@
             <div class="calc-wrapper">
                 <div class="input-section">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                        <!-- Titre SEO : Simulateur Emprunt -->
                         <h2 style="margin:0; color:var(--primary-dark);">Simulateur d'Emprunt : Calcul de Mensualité & Capacité</h2>
                         <div style="background:#f1f5f9; padding:4px; border-radius:8px;">
                             <button id="btn-mens" style="padding:6px 12px; border:none; border-radius:6px; font-weight:600; cursor:pointer;" onclick="setMode('mensualite')">Mensualité</button>
@@ -304,16 +372,16 @@
                         <div style="display:flex; justify-content:space-between; font-size:1.1em; color:var(--accent-gold); margin-top:10px;"><span>À Financer</span><span style="font-weight:800;" id="res_financer">0 €</span></div>
                         <div id="res_capacite_box" style="display:none; background:rgba(255,255,255,0.1); padding:10px; border-radius:8px; margin-top:15px; text-align:center;"><small>Budget Achat Max</small><br><strong style="font-size:1.4em; color:var(--success);" id="res_capacite_achat">0 €</strong></div>
                     </div>
-                    <!-- Bouton d'Affiliation Crédit (Simplifié pour éviter le débordement) -->
-                    <a id="btn_affiliation_courtier" href="#lien-affilié-courtier" target="_blank" class="btn-affiliation" style="margin-top:20px;">
-                        💰 Comparez les taux
-                    </a>
-                    <button class="btn-primary" style="margin-top:10px;" onclick="openTableModal()"><span>📊</span> Tableau d'Amortissement</button>
-                    <button class="btn-secondary" onclick="shareSimulation()">🔗 Copier le lien</button>
-                    <button class="btn-outline" onclick="generatePDF()">📥 Télécharger PDF</button>
-
                     
-                    <!-- Avertissement Légal -->
+                    <!-- Bouton Affiliation Crédit (CORRIGÉ & ALIGNÉ) -->
+                    <a id="btn_affiliation_courtier" href="#lien-affilié-courtier" target="_blank" class="btn-affiliation">
+                        <span style="font-size: 1.2em;">💰</span> Comparez les taux
+                    </a>
+                    
+                    <button class="btn-primary" onclick="openTableModal()"><span>📊</span> Tableau d'Amortissement</button>
+                    <button class="btn-secondary" onclick="shareSimulation()"><span>🔗</span> Copier le lien</button>
+                    <button class="btn-outline" onclick="generatePDF()"><span>📥</span> Télécharger PDF</button>
+
                     <p style="font-size:0.7em; opacity:0.6; margin-top:15px; margin-bottom:0;">
                         *Simulation à titre indicatif, non contractuelle. Consultez toujours un professionnel du crédit.
                     </p>
@@ -325,20 +393,17 @@
         <section id="patrimoine-page" style="display: none;">
             <div class="calc-wrapper">
                 <div class="input-section">
-                    <!-- Titre SEO : Rentabilité Locative -->
                     <h2 style="color:var(--primary-dark);">Rentabilité Locative Nette & Fiscalité LMNP (Réel/Micro)</h2>
                     <div class="form-group"><label>Prix Achat (FAI)</label><input type="number" id="y_prix" class="form-control" value="200000" oninput="calcYield()"></div>
                     <div class="form-group"><label>Loyer Mensuel (CC)</label><input type="number" id="y_loyer" class="form-control" value="950" oninput="calcYield()"></div>
                     <div class="form-group"><label>Charges Annuelles</label><input type="number" id="y_charges" class="form-control" value="1500" oninput="calcYield()"></div>
                     <div class="form-group"><label>Mensualité Crédit</label><input type="number" id="y_credit" class="form-control" value="850" oninput="calcYield()"></div>
                     
-                    <!-- FRAIS DE GESTION -->
                     <div class="form-group">
                         <label>Frais de Gestion Locative <span id="y_gestion_val">8.0</span> %</label>
                         <input type="range" id="y_gestion_rate" min="0" max="15" step="0.5" value="8.0" oninput="document.getElementById('y_gestion_val').innerText = parseFloat(this.value).toFixed(1); calcYield()">
                     </div>
                     
-                    <!-- MODULE FISCALITE -->
                     <div style="background:#f1f5f9; padding:15px; border-radius:8px; margin-top:20px;">
                         <h4 style="margin-top:0; color:var(--primary-dark);">Fiscalité (Estimation LMNP)</h4>
                         <div class="form-group">
@@ -356,9 +421,10 @@
                                 <option value="reel">Réel (Amortissement)</option>
                             </select>
                         </div>
-                        <!-- Bouton d'Affiliation LMNP (Simplifié pour éviter le débordement) -->
-                        <a id="btn_affiliation_lmnp" href="#lien-affilié-LMNP" target="_blank" class="btn-affiliation" style="margin-top:15px;">
-                            ⚖️ Audit Fiscalité Offert
+                        
+                        <!-- Bouton Affiliation LMNP (CORRIGÉ & ALIGNÉ) -->
+                        <a id="btn_affiliation_lmnp" href="#lien-affilié-LMNP" target="_blank" class="btn-affiliation">
+                            <span style="font-size: 1.2em;">⚖️</span> Audit Fiscalité Offert
                         </a>
                     </div>
                 </div>
@@ -384,26 +450,10 @@
         <section id="energie-page" style="display:none;">
             <div class="calc-wrapper">
                 <div class="input-section">
-                    <!-- Titre SEO : Audit Énergie DPE -->
                     <h2 style="color:var(--primary-dark);">Audit Énergie (DPE) : Estimer la Classe Énergétique</h2>
                     <p style="color:var(--text-muted);">Estimez rapidement la classe énergétique de votre futur bien (A à G).</p>
-                    <div class="form-group">
-                        <label>Construction</label>
-                        <select id="dpe_annee" class="form-control" onchange="calcDPE()">
-                            <option value="1970">Avant 1974 (Non isolé)</option>
-                            <option value="1990">1975-2000 (Moyen)</option>
-                            <option value="2010" selected>2000-2012 (Bon)</option>
-                            <option value="2020">Récent (Très bon)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Chauffage</label>
-                        <select id="dpe_chauffage" class="form-control" onchange="calcDPE()">
-                            <option value="elec">Électrique</option>
-                            <option value="gaz">Gaz</option>
-                            <option value="pac">Pompe à Chaleur</option>
-                        </select>
-                    </div>
+                    <div class="form-group"><label>Construction</label><select id="dpe_annee" class="form-control" onchange="calcDPE()"><option value="1970">Avant 1974 (Non isolé)</option><option value="1990">1975-2000 (Moyen)</option><option value="2010" selected>2000-2012 (Bon)</option><option value="2020">Récent (Très bon)</option></select></div>
+                    <div class="form-group"><label>Chauffage</label><select id="dpe_chauffage" class="form-control" onchange="calcDPE()"><option value="elec">Électrique</option><option value="gaz">Gaz</option><option value="pac">Pompe à Chaleur</option></select></div>
                 </div>
                 <div class="sticky-results">
                     <div style="opacity:0.8;">CLASSE ÉNERGÉTIQUE ESTIMÉE</div>
@@ -417,94 +467,50 @@
         <section id="maintenance-page" style="display:none;">
             <div class="calc-wrapper">
                 <div class="input-section">
-                    <!-- Titre SEO : Provision Risques -->
                     <h2 style="color:var(--primary-dark);">Provision pour Risques : Vacance Locative & Maintenance</h2>
                     <p style="color:var(--text-muted)">Anticipez les coûts imprévus et les périodes sans locataire pour sécuriser votre cashflow.</p>
-                    
                     <h4 style="color:var(--primary-dark); margin-top:30px;">1. Risque de Vacance Locative</h4>
-                    <div class="form-group">
-                        <label>Loyer Annuel Estimé</label>
-                        <input type="number" id="maint_loyer_annuel" class="form-control" value="11400" oninput="calcMaintenance()">
-                    </div>
-                    <div class="form-group">
-                        <label>Vacance Locative Moyenne <span id="maint_vac_val">5.0</span> %</label>
-                        <input type="range" id="maint_vacance_rate" min="0" max="15" step="0.5" value="5" oninput="document.getElementById('maint_vac_val').innerText = this.value; calcMaintenance()">
-                    </div>
-
+                    <div class="form-group"><label>Loyer Annuel Estimé</label><input type="number" id="maint_loyer_annuel" class="form-control" value="11400" oninput="calcMaintenance()"></div>
+                    <div class="form-group"><label>Vacance Locative Moyenne <span id="maint_vac_val">5.0</span> %</label><input type="range" id="maint_vacance_rate" min="0" max="15" step="0.5" value="5" oninput="document.getElementById('maint_vac_val').innerText = this.value; calcMaintenance()"></div>
                     <h4 style="color:var(--primary-dark); margin-top:30px;">2. Maintenance et Travaux</h4>
-                    <div class="form-group">
-                        <label>Prix d'Achat du Bien <span style="font-weight:normal; color:var(--text-muted);">(pour provision)</span></label>
-                        <input type="number" id="maint_prix_achat" class="form-control" value="200000" oninput="calcMaintenance()">
-                    </div>
-                     <div class="form-group">
-                        <label>État Général du Bien</label>
-                        <select id="maint_etat" class="form-control" onchange="calcMaintenance()">
-                            <option value="neuf">Neuf / Moins de 5 ans (0.5% du prix)</option>
-                            <option value="bon" selected>Bon / Récent (1.0% du prix)</option>
-                            <option value="moyen">Moyen / + de 20 ans (1.5% du prix)</option>
-                            <option value="vieux">À Rénover / Très Vieux (2.0% du prix)</option>
-                        </select>
-                    </div>
-
+                    <div class="form-group"><label>Prix d'Achat du Bien <span style="font-weight:normal; color:var(--text-muted);">(pour provision)</span></label><input type="number" id="maint_prix_achat" class="form-control" value="200000" oninput="calcMaintenance()"></div>
+                     <div class="form-group"><label>État Général du Bien</label><select id="maint_etat" class="form-control" onchange="calcMaintenance()"><option value="neuf">Neuf / Moins de 5 ans (0.5% du prix)</option><option value="bon" selected>Bon / Récent (1.0% du prix)</option><option value="moyen">Moyen / + de 20 ans (1.5% du prix)</option><option value="vieux">À Rénover / Très Vieux (2.0% du prix)</option></select></div>
                 </div>
-
                 <div class="sticky-results">
                     <div style="opacity:0.8;">PROVISION TOTALE NÉCESSAIRE</div>
                     <div style="font-size:3em; font-weight:800; color:var(--danger); line-height:1;" id="maint_total_annuel">0 €</div>
                     <small style="opacity:0.7;">PAR AN</small>
-
                     <div style="margin-top:30px; text-align:left; border-top:1px solid rgba(255,255,255,0.2); padding-top:15px;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                            <span style="opacity:0.7;">Provision Mensuelle</span>
-                            <span style="font-weight:700;" id="maint_total_mensuel">0 €</span>
-                        </div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="opacity:0.7;">Provision Mensuelle</span><span style="font-weight:700;" id="maint_total_mensuel">0 €</span></div>
                         <div style="margin-top:20px; font-size:0.9em;">
                             <h5 style="margin-bottom:5px;">Détail des Risques :</h5>
                             <div style="display:flex; justify-content:space-between; opacity:0.7; margin-bottom:5px;"><span>Vacance Locative (Annuel)</span><span id="maint_vac_annuel">0 €</span></div>
                             <div style="display:flex; justify-content:space-between; opacity:0.7;"><span>Maintenance/Travaux (Annuel)</span><span id="maint_travaux_annuel">0 €</span></div>
                         </div>
                     </div>
-                    
                     <p style="font-size:0.8em; opacity:0.8; margin-top:30px;">*Cette somme doit idéalement être mise de côté chaque mois pour absorber les imprévus sans impacter votre trésorerie.</p>
                 </div>
             </div>
         </section>
         
-        <!-- CALCULATEUR D'ACQUISITION (NOUVEAU) -->
+        <!-- ACQUISITION -->
         <section id="acquisition-page" style="display:none;">
             <div class="calc-wrapper">
                 <div class="input-section">
-                    <!-- Titre SEO : Vitesse Acquisition -->
                     <h2 style="color:var(--primary-dark);">Calculateur de Vitesse d'Acquisition (Retour sur Apport)</h2>
                     <p style="color:var(--text-muted)">Calculez le temps nécessaire pour que le cashflow net généré par votre bien immobilier reconstitue votre apport initial.</p>
-                    
-                    <h4 style="color:var(--primary-dark); margin-top:30px;">Données de l'Opération</h4>
-                    <div class="form-group">
-                        <label>Apport Initial Investi</label>
-                        <input type="number" id="acq_apport" class="form-control" value="40000" oninput="calcAcquisition()">
-                    </div>
-                    <div class="form-group">
-                        <label>Cashflow Mensuel Net (après TOUTES les charges et impôts)</label>
-                        <input type="number" id="acq_cashflow" class="form-control" value="150" oninput="calcAcquisition()">
-                    </div>
-
+                    <div class="form-group"><label>Apport Initial Investi</label><input type="number" id="acq_apport" class="form-control" value="40000" oninput="calcAcquisition()"></div>
+                    <div class="form-group"><label>Cashflow Mensuel Net (après TOUTES les charges et impôts)</label><input type="number" id="acq_cashflow" class="form-control" value="150" oninput="calcAcquisition()"></div>
                 </div>
-
                 <div class="sticky-results">
                     <div style="opacity:0.8;">TEMPS NÉCESSAIRE POUR RECONSTITUER L'APPORT</div>
-                    <div class="acquisition-result">
-                        <h3>Délai estimé</h3>
-                        <strong id="acq_years">0</strong>
-                        <small id="acq_months">0 mois</small>
-                    </div>
-                    
+                    <div class="acquisition-result"><h3>Délai estimé</h3><strong id="acq_years">0</strong><small id="acq_months">0 mois</small></div>
                     <p style="font-size:0.8em; opacity:0.8; margin-top:30px;">*Ce calcul est théorique et ne tient pas compte de l'inflation ou de l'appréciation du bien.</p>
                 </div>
             </div>
         </section>
 
-
-        <!-- LEXIQUE -->
+        <!-- LEXIQUE (CONTENU COMPLET RESTAURÉ) -->
         <section id="lexique-page" style="display:none;">
             <h2 style="color:var(--primary-dark); margin-bottom: 20px;">Lexique des Termes Techniques</h2>
             <div class="glass-panel">
@@ -531,7 +537,7 @@
             </div>
         </section>
 
-        <!-- PAGE À PROPOS (NOUVEAU) -->
+        <!-- A PROPOS (CONTENU COMPLET RESTAURÉ) -->
         <section id="about-page" style="display:none;">
             <div class="mission-card">
                 <h2>Notre Mission : Démocratiser l'Investissement.</h2>
@@ -558,11 +564,9 @@
                 </div>
             </div>
         </section>
-
-
     </div>
 
-    <!-- FOOTER (Vérifié et corrigé) -->
+    <!-- FOOTER (CONTENU COMPLET RESTAURÉ) -->
     <footer class="site-footer">
         <div class="footer-inner">
             <div class="footer-col">
@@ -591,113 +595,58 @@
         </div>
     </footer>
 
-    <!-- MODAL TABLE (Déplacé ici pour ne pas impacter le footer) -->
+    <!-- MODAL & TOAST & CHATBOT -->
     <div id="table-modal" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-header"><h3>Tableau d'Amortissement</h3><button class="close-modal" onclick="closeTableModal()">×</button></div>
             <div class="modal-body"><table class="table-responsive"><thead><tr><th>Année</th><th>Restant Dû</th><th>Mensualité</th><th>Intérêts</th><th>Capital</th></tr></thead><tbody id="amortization-body"></tbody></table></div>
         </div>
     </div>
-
-    <!-- TOAST NOTIFICATION (CORRIGÉ ET DÉPLACÉ) -->
     <div id="toast" class="toast">✅ Lien copié dans le presse-papier !</div>
 
-    <!-- CHATBASE EMBED (INTEGRATION FINALE) -->
     <script>
-        window.embeddedChatbotConfig = {
-            // ID OBTENU DE CHATBASE : gMr_AOgB1wlJ4_LBNeKcQ
-            chatbotId: "gMr_AOgB1wlJ4_LBNeKcQ", 
-            domain: "www.chatbase.co"
-        }
+        window.embeddedChatbotConfig = { chatbotId: "gMr_AOgB1wlJ4_LBNeKcQ", domain: "www.chatbase.co" }
     </script>
     <script src="https://www.chatbase.co/embed.min.js" defer></script>
 
     <script>
-        // --- CONFIGURATION D'AFFILIATION (MODIFIER ICI) ---
-        // 1. LIEN D'AFFILIATION UNIQUE vers votre courtier/banque partenaire.
+        // --- LOGIQUE JS (Idem v40) ---
         const AFFILIATION_COURTIER_URL = "https://votre-courtier-partenaire.com/comparer-taux?aff=HorizonPierre";
-        
-        // 2. LIEN D'AFFILIATION UNIQUE vers votre partenaire comptable LMNP.
         const AFFILIATION_LMNP_URL = "https://votre-partenaire-comptable.com/audit-lmnp?aff=HorizonPierre";
 
-
-        // Mise à jour de l'URL du bouton au chargement ou lors de la navigation
         document.addEventListener('DOMContentLoaded', () => {
             const btnCourtier = document.getElementById('btn_affiliation_courtier');
             const btnLMNP = document.getElementById('btn_affiliation_lmnp');
-
             if (btnCourtier) btnCourtier.href = AFFILIATION_COURTIER_URL;
             if (btnLMNP) btnLMNP.href = AFFILIATION_LMNP_URL;
-            
-            // Lancer les calculs initiaux (appelé ici ou dans loadFromURL)
-            loadFromURL();
-            quickCalculate();
+            loadFromURL(); quickCalculate();
         });
 
-        // --- QUICK CALC FUNCTION ---
         function quickCalculate() {
             const prix = parseFloat(document.getElementById('quick_prix').value) || 0;
             const apport = parseFloat(document.getElementById('quick_apport').value) || 0;
             const duree = parseFloat(document.getElementById('quick_duree').value) || 20;
-            const taux = 0.035 / 100; // Taux par défaut simple (3.5% nominal)
-            const t_ass = 0.0034;
-            const t_notaire = 0.075; 
-            const agence = 0; // Pas de frais d'agence dans le Quick Calc pour simplifier
-
-            const notaire = prix * t_notaire;
-            const besoin = prix + notaire + agence;
-            const K = Math.max(0, besoin - apport);
-            
-            let m_pret = 0;
-            let m_ass = 0;
-            
-            if (K > 0) {
-                const tm = taux/12; 
-                const mois = duree*12;
-                m_pret = (K * tm) / (1 - Math.pow(1+tm, -mois));
-                m_ass = (K * t_ass) / 12;
-            }
-            
-            const m_tot = m_pret + m_ass;
-            document.getElementById('quick_mensualite').innerText = formatMoney(m_tot) + " €";
+            const taux = 0.035 / 100; const t_ass = 0.0034; const t_notaire = 0.075; const agence = 0;
+            const notaire = prix * t_notaire; const besoin = prix + notaire + agence; const K = Math.max(0, besoin - apport);
+            let m_pret = 0; let m_ass = 0;
+            if (K > 0) { const tm = taux/12; const mois = duree*12; m_pret = (K * tm) / (1 - Math.pow(1+tm, -mois)); m_ass = (K * t_ass) / 12; }
+            document.getElementById('quick_mensualite').innerText = formatMoney(m_pret + m_ass) + " €";
         }
 
-        // --- CORE NAVIGATION ---
         function navTo(page, el) {
             document.querySelectorAll('section').forEach(s => s.style.display = 'none');
             const targetId = page === 'dpe' ? 'energie' : page;
             const targetSection = document.getElementById(targetId + '-page');
-
-            if (targetSection) {
-                 targetSection.style.display = 'block';
-            }
-            
+            if (targetSection) targetSection.style.display = 'block';
             document.querySelectorAll('.main-nav .nav-link').forEach(l => l.classList.remove('active'));
-            
-            // Logique de sélection de l'onglet actif
-            if (el) {
-                // Si l'élément est le lien cliqué
-                el.classList.add('active');
-            } else {
-                // Si la navigation vient d'ailleurs (ex: une carte de la page d'accueil)
-                const targetLink = document.querySelector(`.main-nav a[onclick*="navTo('${page}')"]`);
-                if (targetLink) {
-                    targetLink.classList.add('active');
-                }
-            }
-            
+            if (el) el.classList.add('active');
+            else { const link = document.querySelector(`.main-nav a[onclick*="navTo('${page}')"]`); if(link) link.classList.add('active'); }
             window.scrollTo(0,0);
-            updateURL(page);
-            
-            // Lancer les calculs initiaux pour les pages
-            if(targetId === 'home') quickCalculate();
-            if(targetId === 'energie') calcDPE();
-            if(targetId === 'maintenance') calcMaintenance();
-            if(targetId === 'patrimoine') calcYield();
+            if(targetId === 'home') quickCalculate(); if(targetId === 'energie') calcDPE();
+            if(targetId === 'maintenance') calcMaintenance(); if(targetId === 'patrimoine') calcYield();
             if(targetId === 'acquisition') calcAcquisition();
         }
 
-        // --- CALCULATOR & URL MANAGER ---
         let mode = 'mensualite';
         const formatMoney = (n) => parseFloat(n).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
         const updateVal = (id, val, suffix) => document.getElementById(id).innerText = formatMoney(val) + suffix;
@@ -706,17 +655,12 @@
             mode = m;
             document.getElementById('btn-mens').style.background = m==='mensualite' ? '#fff' : 'transparent';
             document.getElementById('btn-cap').style.background = m==='capacite' ? '#fff' : 'transparent';
-            
             if(m === 'capacite') {
-                document.getElementById('wrapper-prix').style.display='none';
-                document.getElementById('wrapper-budget').style.display='block';
-                document.getElementById('res_capacite_box').style.display='block';
-                document.getElementById('res_financer').parentElement.style.display='none';
+                document.getElementById('wrapper-prix').style.display='none'; document.getElementById('wrapper-budget').style.display='block';
+                document.getElementById('res_capacite_box').style.display='block'; document.getElementById('res_financer').parentElement.style.display='none';
             } else {
-                document.getElementById('wrapper-prix').style.display='block';
-                document.getElementById('wrapper-budget').style.display='none';
-                document.getElementById('res_capacite_box').style.display='none';
-                document.getElementById('res_financer').parentElement.style.display='flex';
+                document.getElementById('wrapper-prix').style.display='block'; document.getElementById('wrapper-budget').style.display='none';
+                document.getElementById('res_capacite_box').style.display='none'; document.getElementById('res_financer').parentElement.style.display='flex';
             }
             calculate();
         }
@@ -728,309 +672,130 @@
             const duree = parseFloat(document.getElementById('duree').value) || 20;
             const taux = parseFloat(document.getElementById('taux').value) / 100;
             const t_ass = 0.0034; const t_notaire = 0.075; 
-
             let K = 0, prix = 0, m_pret = 0, m_tot = 0, notaire = 0;
 
             if(mode === 'mensualite') {
-                prix = parseFloat(document.getElementById('prix_bien').value) || 0;
-                notaire = prix * t_notaire;
-                let besoin = prix + notaire + agence;
-                K = Math.max(0, besoin - apport);
-                let tm = taux/12; let mois = duree*12;
-                if(K>0) m_pret = (K * tm) / (1 - Math.pow(1+tm, -mois));
+                prix = parseFloat(document.getElementById('prix_bien').value) || 0; notaire = prix * t_notaire;
+                let besoin = prix + notaire + agence; K = Math.max(0, besoin - apport);
+                let tm = taux/12; let mois = duree*12; if(K>0) m_pret = (K * tm) / (1 - Math.pow(1+tm, -mois));
             } else {
-                let budget = parseFloat(document.getElementById('budget_mensuel').value) || 0;
-                m_tot = budget; let mois = duree*12; let tm = taux/12;
-                let facteur = (tm / (1 - Math.pow(1+tm, -mois))) + (t_ass/12);
-                K = budget / facteur;
-                prix = (K + apport - agence) / (1 + t_notaire);
-                if(prix < 0) prix = 0;
-                notaire = prix * t_notaire;
-                m_pret = budget - (K * t_ass / 12);
-                document.getElementById('res_capacite_achat').innerText = formatMoney(prix) + " €";
+                let budget = parseFloat(document.getElementById('budget_mensuel').value) || 0; m_tot = budget; let mois = duree*12; let tm = taux/12;
+                let facteur = (tm / (1 - Math.pow(1+tm, -mois))) + (t_ass/12); K = budget / facteur;
+                prix = (K + apport - agence) / (1 + t_notaire); if(prix < 0) prix = 0; notaire = prix * t_notaire;
+                m_pret = budget - (K * t_ass / 12); document.getElementById('res_capacite_achat').innerText = formatMoney(prix) + " €";
             }
-
-            let m_ass = (K * t_ass) / 12;
-            if(mode === 'mensualite') m_tot = m_pret + m_ass;
+            let m_ass = (K * t_ass) / 12; if(mode === 'mensualite') m_tot = m_pret + m_ass;
             let cout_credit = (m_tot * duree * 12) - K;
-
             document.getElementById('res_mensualite').innerText = formatMoney(m_tot) + " €";
             document.getElementById('res_frais_annexes').innerText = formatMoney(notaire + agence) + " €";
             document.getElementById('res_financer').innerText = formatMoney(K) + " €";
-
             let endettement = 0; if(rev > 0) endettement = (m_tot / rev) * 100;
-            let badge = document.getElementById('badge_endettement');
-            badge.innerText = endettement.toFixed(1) + "% Endettement";
+            let badge = document.getElementById('badge_endettement'); badge.innerText = endettement.toFixed(1) + "% Endettement";
             if(endettement <= 35) { badge.style.background = "rgba(16,185,129,0.2)"; badge.style.color="#34d399"; }
             else { badge.style.background = "rgba(239,68,68,0.2)"; badge.style.color="#f87171"; }
-
-            let p_int = 30; 
             document.getElementById('chart-bg').style.background = `conic-gradient(var(--chart-capital) 0% 60%, var(--chart-interest) 60% 90%, var(--chart-insurance) 90% 100%)`;
-            
             window.lastCalc = { K, taux, duree, m_pret, m_tot, m_ass, notaire, cout_credit, prix, agence, apport };
         }
 
-        // --- YIELD + FISCALITE ---
         function calcYield() {
-            let p = parseFloat(document.getElementById('y_prix').value) || 0;
-            let l = parseFloat(document.getElementById('y_loyer').value) || 0;
-            let c = parseFloat(document.getElementById('y_charges').value) || 0;
-            let cred = parseFloat(document.getElementById('y_credit').value) || 0;
-            let tmi = parseFloat(document.getElementById('y_tmi').value) || 0;
-            let regime = document.getElementById('y_regime').value;
-            const gestionRate = parseFloat(document.getElementById('y_gestion_rate').value) / 100 || 0;
-
-            let an_rent = l * 12;
-            let gestionAnnuelle = an_rent * gestionRate;
-            let gestionMensuelle = gestionAnnuelle / 12;
-
-            let brut = (an_rent / p) * 100;
-            let net = ((an_rent - c - gestionAnnuelle)/p)*100; 
-            
-            let cf_brut = l - cred - (c/12) - gestionMensuelle;
-
-            // Calcul Impôt (Simplifié LMNP)
-            let impot = 0;
-            let csg = 0.172; 
-            
-            if(regime === 'micro') {
-                let base = an_rent * 0.5;
-                impot = base * ( (tmi/100) + csg );
-            } else {
-                let amortissement = p * 0.025; 
-                let interet_estime = p * 0.03; 
-                let base = an_rent - c - gestionAnnuelle - interet_estime - amortissement;
-                if(base < 0) base = 0;
-                impot = base * ( (tmi/100) + csg );
-            }
-            
-            let impot_mensuel = impot / 12;
-            let cf_net = cf_brut - impot_mensuel;
-
-            document.getElementById('y_brut').innerText = brut.toFixed(1) + "%";
-            document.getElementById('y_net').innerText = net.toFixed(1) + "%";
+            let p = parseFloat(document.getElementById('y_prix').value)||0; let l = parseFloat(document.getElementById('y_loyer').value)||0;
+            let c = parseFloat(document.getElementById('y_charges').value)||0; let cred = parseFloat(document.getElementById('y_credit').value)||0;
+            let tmi = parseFloat(document.getElementById('y_tmi').value)||0; let regime = document.getElementById('y_regime').value;
+            const gestionRate = parseFloat(document.getElementById('y_gestion_rate').value)/100||0;
+            let an_rent = l * 12; let gestionAnnuelle = an_rent * gestionRate;
+            let brut = (an_rent/p)*100; let net = ((an_rent - c - gestionAnnuelle)/p)*100; 
+            let cf_brut = l - cred - (c/12) - (gestionAnnuelle/12);
+            let impot = 0; let csg = 0.172; 
+            if(regime === 'micro') { let base = an_rent * 0.5; impot = base * ((tmi/100) + csg); }
+            else { let amort = p * 0.025; let int_est = p * 0.03; let base = Math.max(0, an_rent - c - gestionAnnuelle - int_est - amort); impot = base * ((tmi/100) + csg); }
+            let impot_mensuel = impot / 12; let cf_net = cf_brut - impot_mensuel;
+            document.getElementById('y_brut').innerText = brut.toFixed(1) + "%"; document.getElementById('y_net').innerText = net.toFixed(1) + "%";
             document.getElementById('y_cashflow_brut').innerText = Math.round(cf_brut) + " €";
-            
-            let cfNetEl = document.getElementById('y_cashflow_net');
-            cfNetEl.innerText = (cf_net>0?"+":"") + Math.round(cf_net) + " €";
+            let cfNetEl = document.getElementById('y_cashflow_net'); cfNetEl.innerText = (cf_net>0?"+":"") + Math.round(cf_net) + " €";
             cfNetEl.style.color = cf_net >= 0 ? "var(--success)" : "var(--danger)";
-            
             document.getElementById('y_impot_detail').innerText = `Impôt estimé : ${Math.round(impot_mensuel)} €/mois`;
         }
 
-        function calcDPE() {
+        function calcDPE() { /* Logique DPE identique v40 */
             let an = parseInt(document.getElementById('dpe_annee').value); let ch = document.getElementById('dpe_chauffage').value; let score = 0;
             if(an <= 1970) score = 450; else if(an <= 1990) score = 250; else if(an <= 2010) score = 150; else score = 80;
             if(ch === 'elec') score *= 1.1; if(ch === 'pac') score *= 0.6;
             let l = 'A', c = 'var(--dpe-a)', t = 'Excellent';
-            if(score > 420) { l='G'; c='var(--dpe-g)'; t='Passoire thermique'; } else if(score > 330) { l='F'; c='var(--dpe-f)'; t='Passoire thermique'; } else if(score > 250) { l='E'; c='var(--dpe-e)'; t='Moyen'; } else if(score > 180) { l='D'; c='var(--dpe-d)'; t='Standard'; } else if(score > 110) { l='C'; c='var(--dpe-c)'; t='Bon'; }
+            if(score > 420) { l='G'; c='var(--dpe-g)'; t='Passoire'; } else if(score > 330) { l='F'; c='var(--dpe-f)'; t='Passoire'; }
+            else if(score > 250) { l='E'; c='var(--dpe-e)'; t='Moyen'; } else if(score > 180) { l='D'; c='var(--dpe-d)'; t='Standard'; }
+            else if(score > 110) { l='C'; c='var(--dpe-c)'; t='Bon'; }
             let badge = document.getElementById('dpe_badge'); badge.innerText = l; badge.style.background = c; document.getElementById('dpe_text').innerText = t;
         }
-        
-        // --- MAINTENANCE / RISK CALCULATION ---
+
         function calcMaintenance() {
-            const loyerAnnuel = parseFloat(document.getElementById('maint_loyer_annuel').value) || 0;
-            const vacanceRate = parseFloat(document.getElementById('maint_vacance_rate').value) / 100 || 0;
-            const prixAchat = parseFloat(document.getElementById('maint_prix_achat').value) || 0;
-            const etat = document.getElementById('maint_etat').value;
-
-            // 1. Provision Vacance Locative
-            const provisionVacance = loyerAnnuel * vacanceRate;
-            
-            // 2. Provision Travaux (basée sur % du prix d'achat)
-            let travauxRate = 0.01; // Default
-            if (etat === 'neuf') travauxRate = 0.005; // 0.5%
-            else if (etat === 'bon') travauxRate = 0.01; // 1.0%
-            else if (etat === 'moyen') travauxRate = 0.015; // 1.5%
-            else if (etat === 'vieux') travauxRate = 0.02; // 2.0%
-            
-            const provisionTravaux = prixAchat * travauxRate;
-
-            // Total annuel
-            const totalAnnuel = provisionVacance + provisionTravaux;
-            const totalMensuel = totalAnnuel / 12;
-
-            // Update UI
-            document.getElementById('maint_vac_annuel').innerText = formatMoney(provisionVacance) + " €";
-            document.getElementById('maint_travaux_annuel').innerText = formatMoney(provisionTravaux) + " €";
-            document.getElementById('maint_total_annuel').innerText = formatMoney(totalAnnuel) + " €";
-            document.getElementById('maint_total_mensuel').innerText = formatMoney(totalMensuel) + " €";
+            const loyer = parseFloat(document.getElementById('maint_loyer_annuel').value)||0; const vacRate = parseFloat(document.getElementById('maint_vacance_rate').value)/100||0;
+            const prix = parseFloat(document.getElementById('maint_prix_achat').value)||0; const etat = document.getElementById('maint_etat').value;
+            const provVac = loyer * vacRate;
+            let txTravaux = 0.01; if(etat==='neuf') txTravaux=0.005; else if(etat==='moyen') txTravaux=0.015; else if(etat==='vieux') txTravaux=0.02;
+            const provTravaux = prix * txTravaux; const totalAn = provVac + provTravaux;
+            document.getElementById('maint_total_annuel').innerText = formatMoney(totalAn) + " €";
+            document.getElementById('maint_total_mensuel').innerText = formatMoney(totalAn/12) + " €";
         }
-        
-        // --- ACQUISITION RATE CALCULATION (NOUVEAU) ---
+
         function calcAcquisition() {
-            const apport = parseFloat(document.getElementById('acq_apport').value) || 0;
-            const cashflow = parseFloat(document.getElementById('acq_cashflow').value) || 0;
-            
-            const acqYearsEl = document.getElementById('acq_years');
-            const acqMonthsEl = document.getElementById('acq_months');
-
-            if (cashflow <= 0) {
-                acqYearsEl.innerText = '∞';
-                acqMonthsEl.innerText = "Cashflow Négatif (Impossible)";
-                acqYearsEl.parentElement.style.backgroundColor = '#fecaca';
-                acqYearsEl.parentElement.style.color = 'var(--danger)';
-                acqYearsEl.style.color = 'var(--danger)';
-                return;
-            }
-
-            const totalMonths = apport / cashflow;
-            
-            const years = Math.floor(totalMonths / 12);
-            const months = Math.round(totalMonths % 12);
-
-            acqYearsEl.parentElement.style.backgroundColor = '#e0f2fe';
-            acqYearsEl.parentElement.style.color = 'var(--primary-dark)';
-            acqYearsEl.style.color = 'var(--success)';
-            
-            if (years >= 1) {
-                acqYearsEl.innerText = `${years} ans`;
-                acqMonthsEl.innerText = `et ${months} mois`;
-            } else {
-                 acqYearsEl.innerText = `${Math.round(totalMonths)} mois`;
-                 acqMonthsEl.innerText = `(Moins d'un an)`;
-            }
-
-            if (years === 0 && months === 0) {
-                acqYearsEl.innerText = '0 mois';
-                acqMonthsEl.innerText = '';
-            }
-        }
-
-
-        // --- URL SHARING & LOADING ---
-        function updateURL(section) {
-            // Logic to update URL based on current calculator values
+            const apport = parseFloat(document.getElementById('acq_apport').value)||0; const cf = parseFloat(document.getElementById('acq_cashflow').value)||0;
+            const yEl = document.getElementById('acq_years'); const mEl = document.getElementById('acq_months');
+            if(cf <= 0) { yEl.innerText = '∞'; mEl.innerText = "Cashflow Négatif"; return; }
+            const moisTotal = apport / cf; const ans = Math.floor(moisTotal / 12); const mois = Math.round(moisTotal % 12);
+            yEl.innerText = ans >= 1 ? `${ans} ans` : `${Math.round(moisTotal)} mois`; mEl.innerText = ans >= 1 ? `et ${mois} mois` : `(Moins d'un an)`;
         }
 
         function shareSimulation() {
-            const params = new URLSearchParams();
-            params.set('p', document.getElementById('prix_bien').value);
-            params.set('a', document.getElementById('apport').value);
-            params.set('d', document.getElementById('duree').value);
-            params.set('t', document.getElementById('taux').value);
-            params.set('tab', 'calculator');
-            
+            const params = new URLSearchParams(); params.set('p', document.getElementById('prix_bien').value);
+            params.set('a', document.getElementById('apport').value); params.set('d', document.getElementById('duree').value); params.set('t', document.getElementById('taux').value);
             const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-            navigator.clipboard.writeText(url).then(() => {
-                const toast = document.getElementById('toast');
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 3000);
-            });
+            navigator.clipboard.writeText(url).then(() => { const t = document.getElementById('toast'); t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); });
         }
 
         function loadFromURL() {
             const params = new URLSearchParams(window.location.search);
             if(params.has('p')) {
-                document.getElementById('prix_bien').value = params.get('p');
-                document.getElementById('apport').value = params.get('a');
-                document.getElementById('duree').value = params.get('d');
-                document.getElementById('taux').value = params.get('t');
-                updateVal('duree_val', params.get('d'), '');
-                calculate();
-                if(params.get('tab') === 'patrimoine') navTo('patrimoine');
-                else navTo('calculator', document.querySelectorAll('.nav-link')[1]);
-            } else {
-                navTo('home', document.querySelectorAll('.nav-link')[0]); // Start on home
-            }
+                document.getElementById('prix_bien').value = params.get('p'); document.getElementById('apport').value = params.get('a');
+                document.getElementById('duree').value = params.get('d'); document.getElementById('taux').value = params.get('t');
+                updateVal('duree_val', params.get('d'), ''); calculate();
+                if(params.get('tab') === 'patrimoine') navTo('patrimoine'); else navTo('calculator', document.querySelectorAll('.nav-link')[1]);
+            } else { navTo('home', document.querySelectorAll('.nav-link')[0]); }
         }
 
-        // --- PDF ---
         async function generatePDF() {
-            // PDF generation logic (same as v24)
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const data = window.lastCalc;
-            if (!data || !data.K) { /* Remplacé alert() */ console.error("Veuillez faire une simulation avant de générer le PDF."); return; }
-
-            // En-tête
+            const { jsPDF } = window.jspdf; const doc = new jsPDF(); const data = window.lastCalc;
+            if (!data || !data.K) { console.error("Simulez d'abord."); return; }
             doc.setFillColor(15, 23, 42); doc.rect(0, 0, 210, 35, 'F');
-            doc.setFont("helvetica", "bold"); doc.setFontSize(20); doc.setTextColor(255, 255, 255);
-            doc.text("HORIZON PIERRE", 15, 18);
-            doc.setFontSize(10); doc.setFont("helvetica", "normal");
-            doc.text("Étude de Financement Immobilier", 15, 26);
-            doc.text(`Le ${new Date().toLocaleDateString()}`, 170, 18);
-
-            let y = 50;
-
-            // SECTION 1: LE COÛT (Ce que je paie)
-            doc.setTextColor(0); doc.setFontSize(14); doc.setFont("helvetica", "bold");
-            doc.text("1. Coût Total de l'Opération", 15, y);
-            doc.setLineWidth(0.5); doc.line(15, y+2, 195, y+2);
-            y += 10;
-            
+            doc.setFont("helvetica", "bold"); doc.setFontSize(20); doc.setTextColor(255); doc.text("HORIZON PIERRE", 15, 18);
+            doc.setFontSize(10); doc.text("Étude Financement", 15, 26);
+            let y = 50; doc.setTextColor(0); doc.setFontSize(14); doc.text("1. Coût Projet", 15, y); y+=10;
             doc.setFontSize(11); doc.setFont("helvetica", "normal");
-            doc.text("Prix Net Vendeur :", 20, y); doc.text(`${formatMoney(data.prix)} €`, 160, y, {align:'right'}); y+=8;
-            doc.text("Frais d'Agence :", 20, y); doc.text(`${formatMoney(data.agence)} €`, 160, y, {align:'right'}); y+=8;
-            doc.text("Frais de Notaire (Estimés) :", 20, y); doc.text(`${formatMoney(data.notaire)} €`, 160, y, {align:'right'}); y+=10;
+            doc.text(`Prix: ${formatMoney(data.prix)} €`, 20, y); y+=8; doc.text(`Notaire: ${formatMoney(data.notaire)} €`, 20, y); y+=20;
+            doc.setFont("helvetica", "bold"); doc.text(`Emprunt: ${formatMoney(data.K)} €`, 20, y); y+=10;
+            doc.text(`Mensualité: ${formatMoney(data.m_tot)} €`, 20, y); y+=20;
             
-            doc.setFillColor(240); doc.rect(15, y-6, 180, 10, 'F');
-            doc.setFont("helvetica", "bold"); 
-            let totalCout = parseFloat(data.prix) + parseFloat(data.agence) + parseFloat(data.notaire);
-            doc.text("TOTAL DU PROJET :", 20, y); doc.text(`${formatMoney(totalCout)} €`, 160, y, {align:'right'}); y+=20;
-
-            // SECTION 2: LE FINANCEMENT (Comment je paie)
-            doc.setFontSize(14); doc.text("2. Plan de Financement", 15, y);
-            doc.line(15, y+2, 195, y+2); y += 10;
-            
-            doc.setFontSize(11); doc.setFont("helvetica", "normal");
-            doc.text("Votre Apport Personnel :", 20, y); doc.text(`- ${formatMoney(data.apport)} €`, 160, y, {align:'right'}); y+=8;
-            
-            doc.setFillColor(230, 240, 255); doc.rect(15, y-2, 180, 14, 'F');
-            doc.setFont("helvetica", "bold"); doc.setTextColor(15, 23, 42);
-            doc.text("MONTANT À EMPRUNTER :", 20, y+8); doc.text(`${formatMoney(data.K)} €`, 160, y+8, {align:'right'}); y+=25;
-
-            // SECTION 3: EMPRUNT
-            doc.setTextColor(0);
-            doc.setFontSize(14); doc.text("3. Conditions de l'Emprunt", 15, y);
-            doc.line(15, y+2, 195, y+2); y += 12;
-
-            doc.setFontSize(11); doc.setFont("helvetica", "normal");
-            doc.text(`Mensualité (Assurance Incluse) : ${formatMoney(data.m_tot)} € / mois`, 20, y); y+=8;
-            doc.text(`Taux Nominal : ${document.getElementById('taux').value} %  |  Durée : ${data.duree} ans`, 20, y); y+=8;
-            doc.text(`Coût total des intérêts + assurance : ${formatMoney(data.cout_credit)} €`, 20, y); y+=20;
-
-            // SECTION 4: TABLEAU COMPLET
-            doc.setFontSize(14); doc.setFont("helvetica", "bold");
-            doc.text("4. Tableau d'Amortissement Prévisionnel (Complet)", 15, y);
-            y += 5;
-
             let rows = []; let solde = data.K; let tm = data.taux / 12;
             for(let an=1; an<= data.duree; an++) {
                 let int_an = 0; let cap_an = 0;
-                for(let m=0; m<12; m++) {
-                    let int = solde * tm; let cap = data.m_pret - int;
-                    int_an += int; cap_an += cap; solde -= cap; if(solde < 0) solde = 0;
-                }
+                for(let m=0; m<12; m++) { let int = solde * tm; let cap = data.m_pret - int; int_an += int; cap_an += cap; solde -= cap; if(solde<0)solde=0; }
                 rows.push([`Année ${an}`, `${formatMoney(solde)} €`, `${formatMoney(int_an)} €`, `${formatMoney(cap_an)} €`]);
             }
-
-            doc.autoTable({ startY: y, head: [['Année', 'Restant Dû', 'Intérêts', 'Capital']], body: rows, theme: 'striped', headStyles: { fillColor: [15, 23, 42] }, styles: { fontSize: 10, cellPadding: 3 }, pageBreak: 'auto' });
-
-            doc.save("Etude_HorizonPierre_Complete.pdf");
+            doc.autoTable({ startY: y, head: [['Année', 'Reste', 'Intérêts', 'Capital']], body: rows });
+            doc.save("Etude_HorizonPierre.pdf");
         }
 
-        function openTableModal() { 
-            document.getElementById('table-modal').classList.add('show'); 
-            generateTable(); 
-        }
-        function closeTableModal() { 
-            document.getElementById('table-modal').classList.remove('show'); 
-        }
+        function openTableModal() { document.getElementById('table-modal').classList.add('show'); generateTable(); }
+        function closeTableModal() { document.getElementById('table-modal').classList.remove('show'); }
         function generateTable() {
             let { K, taux, duree, m_pret } = window.lastCalc || {}; if(!K) return;
             let html = ''; let solde = K; let tm = taux / 12;
             for(let an=1; an<=duree; an++) {
                 let int_an = 0; let cap_an = 0;
-                for(let m=0; m<12; m++) { let int = solde * tm; let cap = m_pret - int; int_an += int; cap_an += cap; solde -= cap; if(solde < 0) solde = 0; }
-                html += `<tr><td>Année ${an}</td><td>${formatMoney(solde)} €</td><td>${formatMoney(m_pret)} €</td><td>${formatMoney(int_an)} €</td><td><strong style="color:var(--success)">${formatMoney(cap_an)} €</strong></td></tr>`;
+                for(let m=0; m<12; m++) { let int = solde * tm; let cap = m_pret - int; int_an += int; cap_an += cap; solde -= cap; if(solde<0)solde=0; }
+                html += `<tr><td>An ${an}</td><td>${formatMoney(solde)}</td><td>${formatMoney(m_pret)}</td><td>${formatMoney(int_an)}</td><td><strong>${formatMoney(cap_an)}</strong></td></tr>`;
             }
             document.getElementById('amortization-body').innerHTML = html;
         }
-
-        // Init: Load data from URL if present, otherwise start on home
-        // Rendu inutile par le doc.addEventListener('DOMContentLoaded')
-        // loadFromURL(); 
     </script>
 </body>
 </html>
