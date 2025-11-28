@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
-        /* --- DESIGN SYSTEM (v42 - Restauré) --- */
+        /* --- DESIGN SYSTEM (v43 - Stable) --- */
         :root {
             --primary-dark: #0f172a;
             --primary-blue: #3b82f6;
@@ -762,37 +762,113 @@
             } else { navTo('home', document.querySelectorAll('.nav-link')[0]); }
         }
 
+        // --- FONCTIONS RESTAURÉES (VRAI PDF ET VRAI TABLEAU) ---
+
         async function generatePDF() {
-            const { jsPDF } = window.jspdf; const doc = new jsPDF(); const data = window.lastCalc;
-            if (!data || !data.K) { console.error("Simulez d'abord."); return; }
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const data = window.lastCalc;
+            if (!data || !data.K) { console.error("Veuillez faire une simulation avant de générer le PDF."); return; }
+
+            // En-tête
             doc.setFillColor(15, 23, 42); doc.rect(0, 0, 210, 35, 'F');
-            doc.setFont("helvetica", "bold"); doc.setFontSize(20); doc.setTextColor(255); doc.text("HORIZON PIERRE", 15, 18);
-            doc.setFontSize(10); doc.text("Étude Financement", 15, 26);
-            let y = 50; doc.setTextColor(0); doc.setFontSize(14); doc.text("1. Coût Projet", 15, y); y+=10;
-            doc.setFontSize(11); doc.setFont("helvetica", "normal");
-            doc.text(`Prix: ${formatMoney(data.prix)} €`, 20, y); y+=8; doc.text(`Notaire: ${formatMoney(data.notaire)} €`, 20, y); y+=20;
-            doc.setFont("helvetica", "bold"); doc.text(`Emprunt: ${formatMoney(data.K)} €`, 20, y); y+=10;
-            doc.text(`Mensualité: ${formatMoney(data.m_tot)} €`, 20, y); y+=20;
+            doc.setFont("helvetica", "bold"); doc.setFontSize(20); doc.setTextColor(255, 255, 255);
+            doc.text("HORIZON PIERRE", 15, 18);
+            doc.setFontSize(10); doc.setFont("helvetica", "normal");
+            doc.text("Étude de Financement Immobilier", 15, 26);
+            doc.text(`Le ${new Date().toLocaleDateString()}`, 170, 18);
+
+            let y = 50;
+
+            // SECTION 1: LE COÛT (Ce que je paie)
+            doc.setTextColor(0); doc.setFontSize(14); doc.setFont("helvetica", "bold");
+            doc.text("1. Coût Total de l'Opération", 15, y);
+            doc.setLineWidth(0.5); doc.line(15, y+2, 195, y+2);
+            y += 10;
             
+            doc.setFontSize(11); doc.setFont("helvetica", "normal");
+            doc.text("Prix Net Vendeur :", 20, y); doc.text(`${formatMoney(data.prix)} €`, 160, y, {align:'right'}); y+=8;
+            doc.text("Frais d'Agence :", 20, y); doc.text(`${formatMoney(data.agence)} €`, 160, y, {align:'right'}); y+=8;
+            doc.text("Frais de Notaire (Estimés) :", 20, y); doc.text(`${formatMoney(data.notaire)} €`, 160, y, {align:'right'}); y+=10;
+            
+            doc.setFillColor(240); doc.rect(15, y-6, 180, 10, 'F');
+            doc.setFont("helvetica", "bold"); 
+            let totalCout = parseFloat(data.prix) + parseFloat(data.agence) + parseFloat(data.notaire);
+            doc.text("TOTAL DU PROJET :", 20, y); doc.text(`${formatMoney(totalCout)} €`, 160, y, {align:'right'}); y+=20;
+
+            // SECTION 2: LE FINANCEMENT (Comment je paie)
+            doc.setFontSize(14); doc.text("2. Plan de Financement", 15, y);
+            doc.line(15, y+2, 195, y+2); y += 10;
+            
+            doc.setFontSize(11); doc.setFont("helvetica", "normal");
+            doc.text("Votre Apport Personnel :", 20, y); doc.text(`- ${formatMoney(data.apport)} €`, 160, y, {align:'right'}); y+=8;
+            
+            doc.setFillColor(230, 240, 255); doc.rect(15, y-2, 180, 14, 'F');
+            doc.setFont("helvetica", "bold"); doc.setTextColor(15, 23, 42);
+            doc.text("MONTANT À EMPRUNTER :", 20, y+8); doc.text(`${formatMoney(data.K)} €`, 160, y+8, {align:'right'}); y+=25;
+
+            // SECTION 3: EMPRUNT
+            doc.setTextColor(0);
+            doc.setFontSize(14); doc.text("3. Conditions de l'Emprunt", 15, y);
+            doc.line(15, y+2, 195, y+2); y += 12;
+
+            doc.setFontSize(11); doc.setFont("helvetica", "normal");
+            doc.text(`Mensualité (Assurance Incluse) : ${formatMoney(data.m_tot)} € / mois`, 20, y); y+=8;
+            doc.text(`Taux Nominal : ${document.getElementById('taux').value} %  |  Durée : ${data.duree} ans`, 20, y); y+=8;
+            doc.text(`Coût total des intérêts + assurance : ${formatMoney(data.cout_credit)} €`, 20, y); y+=20;
+
+            // SECTION 4: TABLEAU COMPLET
+            doc.setFontSize(14); doc.setFont("helvetica", "bold");
+            doc.text("4. Tableau d'Amortissement Prévisionnel (Complet)", 15, y);
+            y += 5;
+
             let rows = []; let solde = data.K; let tm = data.taux / 12;
             for(let an=1; an<= data.duree; an++) {
                 let int_an = 0; let cap_an = 0;
-                for(let m=0; m<12; m++) { let int = solde * tm; let cap = data.m_pret - int; int_an += int; cap_an += cap; solde -= cap; if(solde<0)solde=0; }
+                for(let m=0; m<12; m++) {
+                    let int = solde * tm; let cap = data.m_pret - int;
+                    int_an += int; cap_an += cap; solde -= cap; if(solde < 0) solde = 0;
+                }
                 rows.push([`Année ${an}`, `${formatMoney(solde)} €`, `${formatMoney(int_an)} €`, `${formatMoney(cap_an)} €`]);
             }
-            doc.autoTable({ startY: y, head: [['Année', 'Reste', 'Intérêts', 'Capital']], body: rows });
-            doc.save("Etude_HorizonPierre.pdf");
+
+            doc.autoTable({ startY: y, head: [['Année', 'Capital Restant Dû', 'Intérêts Payés', 'Capital Remboursé']], body: rows, theme: 'striped', headStyles: { fillColor: [15, 23, 42] }, styles: { fontSize: 10, cellPadding: 3 }, pageBreak: 'auto' });
+
+            doc.save("Etude_HorizonPierre_Complete.pdf");
         }
 
-        function openTableModal() { document.getElementById('table-modal').classList.add('show'); generateTable(); }
-        function closeTableModal() { document.getElementById('table-modal').classList.remove('show'); }
+        function openTableModal() { 
+            document.getElementById('table-modal').classList.add('show'); 
+            generateTable(); 
+        }
+        function closeTableModal() { 
+            document.getElementById('table-modal').classList.remove('show'); 
+        }
         function generateTable() {
             let { K, taux, duree, m_pret } = window.lastCalc || {}; if(!K) return;
             let html = ''; let solde = K; let tm = taux / 12;
+            
             for(let an=1; an<=duree; an++) {
                 let int_an = 0; let cap_an = 0;
-                for(let m=0; m<12; m++) { let int = solde * tm; let cap = m_pret - int; int_an += int; cap_an += cap; solde -= cap; if(solde<0)solde=0; }
-                html += `<tr><td>An ${an}</td><td>${formatMoney(solde)}</td><td>${formatMoney(m_pret)}</td><td>${formatMoney(int_an)}</td><td><strong>${formatMoney(cap_an)}</strong></td></tr>`;
+                // Calcul pour une année complète
+                for(let m=0; m<12; m++) { 
+                    let int = solde * tm; 
+                    let cap = m_pret - int; 
+                    int_an += int; 
+                    cap_an += cap; 
+                    solde -= cap; 
+                    if(solde < 0) solde = 0; 
+                }
+                
+                // Génération de la ligne HTML proprement formatée
+                html += `
+                    <tr>
+                        <td>Année ${an}</td>
+                        <td>${formatMoney(solde)} €</td>
+                        <td>${formatMoney(m_pret)} €</td>
+                        <td>${formatMoney(int_an)} €</td>
+                        <td><strong style="color:var(--success)">${formatMoney(cap_an)} €</strong></td>
+                    </tr>`;
             }
             document.getElementById('amortization-body').innerHTML = html;
         }
