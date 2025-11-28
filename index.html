@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
-        /* --- DESIGN SYSTEM (v37) --- */
+        /* --- DESIGN SYSTEM (v38) --- */
         :root {
             --primary-dark: #0f172a;
             --primary-blue: #3b82f6;
@@ -81,7 +81,7 @@
             font-weight: 700; 
             cursor: pointer; 
             width: 100%; 
-            max-width: 100%; /* SÉCURITÉ CONTRE LE DÉBORDEMENT */
+            max-width: 100%; 
             display: block; 
             text-align: center;
             text-decoration: none;
@@ -108,12 +108,13 @@
             overflow: hidden; 
             box-sizing: border-box; 
         }
-        /* Ajustement de la largeur des boutons dans sticky-results pour les petits écrans */
+        /* Ajustement de la largeur des boutons dans sticky-results pour les petits écrans (CORRECTION) */
         @media (max-width: 450px) {
              .sticky-results .btn-primary, .sticky-results .btn-secondary, .sticky-results .btn-outline {
-                 /* Réduction du padding pour faire de la place aux boutons affiliation */
-                 padding: 10px; 
-                 font-size: 0.9em;
+                 /* Assure que ces boutons ne sont pas trop larges et permettent le passage à la ligne du bouton affiliation */
+                 padding: 8px 10px; /* Réduction du padding */
+                 font-size: 0.85em;
+                 margin-top: 8px;
              }
         }
         
@@ -320,7 +321,6 @@
                                 <option value="0">0 %</option>
                                 <option value="11">11 %</option>
                                 <option value="30" selected>30 %</option>
-                                <option value="41">41 %</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -640,11 +640,26 @@
         function navTo(page, el) {
             document.querySelectorAll('section').forEach(s => s.style.display = 'none');
             const targetId = page === 'dpe' ? 'energie' : page;
-            document.getElementById(targetId + '-page').style.display = 'block';
+            const targetSection = document.getElementById(targetId + '-page');
+
+            if (targetSection) {
+                 targetSection.style.display = 'block';
+            }
             
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            // Définir la classe active correctement sur le lien cliqué
-            if(el) el.classList.add('active');
+            document.querySelectorAll('.main-nav .nav-link').forEach(l => l.classList.remove('active'));
+            
+            // Logique de sélection de l'onglet actif
+            if (el) {
+                // Si l'élément est le lien cliqué
+                el.classList.add('active');
+            } else {
+                // Si la navigation vient d'ailleurs (ex: une carte de la page d'accueil)
+                const targetLink = document.querySelector(`.main-nav a[onclick*="navTo('${page}')"]`);
+                if (targetLink) {
+                    targetLink.classList.add('active');
+                }
+            }
+            
             window.scrollTo(0,0);
             updateURL(page);
             
@@ -900,7 +915,7 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const data = window.lastCalc;
-            if (!data || !data.K) { alert("Veuillez faire une simulation."); return; }
+            if (!data || !data.K) { /* Remplacé alert() */ console.error("Veuillez faire une simulation avant de générer le PDF."); return; }
 
             // En-tête
             doc.setFillColor(15, 23, 42); doc.rect(0, 0, 210, 35, 'F');
@@ -970,11 +985,11 @@
         }
 
         function openTableModal() { 
-            document.getElementById('table-modal').classList.add('show'); /* Utilisation de la classe show */
+            document.getElementById('table-modal').classList.add('show'); 
             generateTable(); 
         }
         function closeTableModal() { 
-            document.getElementById('table-modal').classList.remove('show'); /* Retrait de la classe show */
+            document.getElementById('table-modal').classList.remove('show'); 
         }
         function generateTable() {
             let { K, taux, duree, m_pret } = window.lastCalc || {}; if(!K) return;
