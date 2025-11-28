@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
-        /* --- DESIGN SYSTEM (v38) --- */
+        /* --- DESIGN SYSTEM (v39) --- */
         :root {
             --primary-dark: #0f172a;
             --primary-blue: #3b82f6;
@@ -87,7 +87,7 @@
             text-decoration: none;
             transition: all 0.2s;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            white-space: normal; /* Permet au texte de passer à la ligne */
+            white-space: normal;
         }
         .btn-affiliation:hover {
             background: #d97706; /* Ton plus foncé */
@@ -111,10 +111,13 @@
         /* Ajustement de la largeur des boutons dans sticky-results pour les petits écrans (CORRECTION) */
         @media (max-width: 450px) {
              .sticky-results .btn-primary, .sticky-results .btn-secondary, .sticky-results .btn-outline {
-                 /* Assure que ces boutons ne sont pas trop larges et permettent le passage à la ligne du bouton affiliation */
-                 padding: 8px 10px; /* Réduction du padding */
+                 padding: 8px 10px;
                  font-size: 0.85em;
                  margin-top: 8px;
+             }
+             .sticky-results .btn-affiliation {
+                 /* Assure que le bouton prend bien toute la place disponible sans forcer les autres à déborder */
+                 font-size: 0.9em;
              }
         }
         
@@ -154,6 +157,29 @@
         .table-responsive th { text-align: left; padding: 12px; background: #f1f5f9; position: sticky; top: 0; }
         .table-responsive td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
         
+        /* TOAST NOTIFICATION CORRECTION */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: var(--primary-dark);
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 3000; /* Plus haut que le modal */
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: visibility 0s, opacity 0.5s;
+        }
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+
         /* Mobile */
         @media (max-width: 768px) {
             .calc-wrapper { grid-template-columns: 1fr; }
@@ -278,9 +304,9 @@
                         <div style="display:flex; justify-content:space-between; font-size:1.1em; color:var(--accent-gold); margin-top:10px;"><span>À Financer</span><span style="font-weight:800;" id="res_financer">0 €</span></div>
                         <div id="res_capacite_box" style="display:none; background:rgba(255,255,255,0.1); padding:10px; border-radius:8px; margin-top:15px; text-align:center;"><small>Budget Achat Max</small><br><strong style="font-size:1.4em; color:var(--success);" id="res_capacite_achat">0 €</strong></div>
                     </div>
-                    <!-- Bouton d'Affiliation (Correction de la taille avec la classe btn-affiliation) -->
+                    <!-- Bouton d'Affiliation Crédit (Simplifié pour éviter le débordement) -->
                     <a id="btn_affiliation_courtier" href="#lien-affilié-courtier" target="_blank" class="btn-affiliation" style="margin-top:20px;">
-                        💰 Comparer les taux avec notre partenaire
+                        💰 Comparez les taux
                     </a>
                     <button class="btn-primary" style="margin-top:10px;" onclick="openTableModal()"><span>📊</span> Tableau d'Amortissement</button>
                     <button class="btn-secondary" onclick="shareSimulation()">🔗 Copier le lien</button>
@@ -330,9 +356,9 @@
                                 <option value="reel">Réel (Amortissement)</option>
                             </select>
                         </div>
-                        <!-- Bouton d'Affiliation LMNP (Ajouté) -->
+                        <!-- Bouton d'Affiliation LMNP (Simplifié pour éviter le débordement) -->
                         <a id="btn_affiliation_lmnp" href="#lien-affilié-LMNP" target="_blank" class="btn-affiliation" style="margin-top:15px;">
-                            ⚖️ Audit Fiscalité Offert par notre Partenaire
+                            ⚖️ Audit Fiscalité Offert
                         </a>
                     </div>
                 </div>
@@ -573,7 +599,7 @@
         </div>
     </div>
 
-    <!-- TOAST NOTIFICATION (Déplacé ici) -->
+    <!-- TOAST NOTIFICATION (CORRIGÉ ET DÉPLACÉ) -->
     <div id="toast" class="toast">✅ Lien copié dans le presse-papier !</div>
 
     <!-- CHATBASE EMBED (INTEGRATION FINALE) -->
